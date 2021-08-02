@@ -1,0 +1,16 @@
+{
+  "name": "lorem_template",
+  "version": "1.0.0",
+  "description": "lorem template for fever",
+  "scripts": {
+    "tailwind": "npx tailwindcss -i ./assets/css/site.css -c ./assets/css/tailwind.config.js -o ./assets/css/style.css --jit --watch",
+    "build": "wp-scripts build"
+  },
+  "author": "kurtkungz",
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.2.1",
+    "@tailwindcss/typography": "^0.4.1",
+    "tailwindcss": "^2.2.6"
+  }
+}
