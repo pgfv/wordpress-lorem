@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-<section class="flex flex-col md:flex-row divide-x divide-gray-300">
+<section class="flex flex-col md:flex-row md:divide-x md:divide-gray-300">
     <section class="md:w-3/4 prose max-w-none md:pr-5">
 		<?php the_content(); ?>
 		<?php edit_post_link(); ?>

@@ -7,35 +7,7 @@
 
 	<?php wp_head(); ?>
     <style type="text/css">
-        <?php $p_size = explode( '|', get_theme_mod('font_size_setting')); ?>
-        p {
-            color: <?php echo get_theme_mod('font_color_setting'); ?>;
-            font-size: <?php echo $p_size[0]; ?>;
-            line-height: <?php echo $p_size[1]; ?>;
-        }
-
-        <?php $h1_size = explode( '|', get_theme_mod('h1_size_setting')); ?>
-        h1 {
-            color: <?php echo get_theme_mod('h1_color_setting'); ?> !important;
-            font-size: <?php echo $h1_size[0]; ?> !important;
-        }
-
-        <?php $h2_size = explode( '|', get_theme_mod('h2_size_setting')); ?>
-        h2 {
-            color: <?php echo get_theme_mod('h2_color_setting'); ?> !important;
-            font-size: <?php echo $h2_size[0]; ?> !important;
-        }
-
-        <?php $h3_size = explode( '|', get_theme_mod('h3_size_setting')); ?>
-        h3 {
-            color: <?php echo get_theme_mod('h3_color_setting'); ?> !important;
-            font-size: <?php echo $h3_size[0]; ?> !important;
-        }
-
-        .widget-primary h2 {
-            color: <?php echo get_theme_mod('header_widget_text_color_setting'); ?> !important;
-            background-color: <?php echo get_theme_mod('header_widget_color_setting'); ?> !important;
-        }
+        <?php echo lorem_css_customizer(); ?>
     </style>
 </head>
 <body <?php body_class(); ?>>
@@ -87,9 +59,9 @@
         </section>
 
 
-        <section id="nav-menu" class="hidden md:block"
+        <section id="nav-menu" class="header-menu hidden md:block"
                  style="background-color:<?php echo get_theme_mod( 'header_menu_color_setting' ) ?>;">
-            <nav class="main-container"><?php echo header_menu(); ?></nav>
+            <nav class="main-container py-5"><?php echo header_menu_list(); ?></nav>
         </section>
     </header>
     <main role="main" class="flex-1 main-container">
