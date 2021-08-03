@@ -1,6 +1,7 @@
 </main>
-<footer class="mt-5 pt-5 pb-20 md:pb-5" style="background-color:<?php echo get_theme_mod( 'footer_color_setting' ) ?>;">
-    <section class="flex flex-col md:flex-row md:space-x-10 md:items-center mb-5 main-container">
+<footer class="footer-content mt-5 pt-5 pb-20 md:pb-5"
+        style="background-color:<?php echo get_theme_mod( 'footer_color_setting' ) ?>;">
+    <section class="flex flex-col md:flex-row md:space-x-10 mb-5 main-container">
         <div class="md:w-1/3 xl:w-1/4 mb-5 md:mb-0">
 			<?php the_custom_logo(); ?>
         </div>
