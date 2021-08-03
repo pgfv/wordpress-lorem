@@ -9,6 +9,7 @@ if ( function_exists( 'add_theme_support' ) ) {
 
 function add_image_sizes() {
 	add_image_size( 'logo-350w', 350 );
+	add_image_size( 'menu-36x36', 36, 36 );
 }
 
 function image_sizes_name( $sizes ) {
@@ -45,28 +46,43 @@ function dequeue_plugin_style() {
 function header_menu() {
 	$html = wp_nav_menu( array(
 		'theme_location' => 'header-menu',
-		'items_wrap'     => '<ul id="%1$s" class="%2$s header-menu grid grid-cols-4 md:grid-cols-8 items-center text-center my-5">%3$s</ul>',
+		'items_wrap'     => '<ul id="%1$s" class="%2$s header-menu group grid grid-cols-4 md:grid-cols-8 items-center text-center my-5">%3$s</ul>',
 		'echo'           => false,
 	) );
 
 	// add class for sub-menu
 	$html = str_replace( 'sub-menu',
-		'sub-menu hidden absolute top-16 w-full divide-y border border-gray-800 bg-gray-100 rounded',
+		'sub-menu group-hover:block absolute top-16 w-full divide-y border border-gray-800 bg-gray-100 rounded z-10 text-left',
 		$html );
+
+	return $html;
+}
+
+function header_menu_list() {
+	$html = wp_nav_menu( array(
+		'theme_location' => 'header-menu',
+		'items_wrap'     => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+		'echo'           => false,
+	) );
+
+	// add class to sub-menu
+	$html = str_replace( 'sub-menu', 'sub-menu group-hover:block hidden', $html );
 
 	return $html;
 }
 
 function header_menu_li_classes( $classes, $item, $args ) {
 	if ( $args->theme_location == 'header-menu' ) {
-		$classes[] = 'flex flex-col relative';
+		$classes[] = 'group';
 	}
 
 	return $classes;
 }
 
 function header_menu_archer_classes( $atts, $item, $args ) {
-	$atts['class'] = 'flex flex-col items-center';
+	if ( $args->theme_location == 'header-menu' ) {
+//		$atts['class'] = 'flex flex-row items-center';
+	}
 
 	return $atts;
 }
@@ -365,6 +381,65 @@ function lorem_widgets_init() {
 		'before_widget' => '<section id="%1$s" class="widget prose max-w-none %2$s">',
 		'after_widget'  => '</section>',
 	) );
+}
+
+function lorem_css_customizer() {
+	$css = 'p{';
+	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
+		$color = get_theme_mod( 'font_color_setting' );
+		$css   .= "color:{$color};";
+	}
+	if ( ! empty( get_theme_mod( 'font_size_setting' ) ) ) {
+		$size = explode( '|', get_theme_mod( 'font_size_setting' ) );
+		$css  .= "font-size:{$size[0]};line-height:{$size[1]};";
+	}
+	$css .= '}';
+
+	$css .= 'h1{';
+	if ( ! empty( get_theme_mod( 'h1_color_setting' ) ) ) {
+		$color = get_theme_mod( 'h1_color_setting' );
+		$css   .= "color:{$color} !important;";
+	}
+	if ( ! empty( get_theme_mod( 'h1_size_setting' ) ) ) {
+		$size = explode( '|', get_theme_mod( 'h1_size_setting' ) );
+		$css  .= "font-size:{$size[0]};";
+	}
+	$css .= '}';
+
+	$css .= 'h2{';
+	if ( ! empty( get_theme_mod( 'h2_color_setting' ) ) ) {
+		$color = get_theme_mod( 'h2_color_setting' );
+		$css   .= "color:{$color} !important;";
+	}
+	if ( ! empty( get_theme_mod( 'h2_size_setting' ) ) ) {
+		$size = explode( '|', get_theme_mod( 'h2_size_setting' ) );
+		$css  .= "font-size:{$size[0]};";
+	}
+	$css .= '}';
+
+	$css .= 'h3{';
+	if ( ! empty( get_theme_mod( 'h3_color_setting' ) ) ) {
+		$color = get_theme_mod( 'h3_color_setting' );
+		$css   .= "color:{$color};";
+	}
+	if ( ! empty( get_theme_mod( 'h3_size_setting' ) ) ) {
+		$size = explode( '|', get_theme_mod( 'h3_size_setting' ) );
+		$css  .= "font-size:{$size[0]};";
+	}
+	$css .= '}';
+
+	$css .= '.widget-primary h2{';
+	if ( ! empty( get_theme_mod( 'header_widget_text_color_setting' ) ) ) {
+		$color = get_theme_mod( 'header_widget_text_color_setting' );
+		$css   .= "color:{$color};";
+	}
+	if ( ! empty( get_theme_mod( 'header_widget_color_setting' ) ) ) {
+		$color = get_theme_mod( 'header_widget_color_setting' );
+		$css   .= "background-color:{$color};";
+	}
+	$css .= '}';
+
+	return $css;
 }
 
 // add action

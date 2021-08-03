@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "lorem template for fever",
   "scripts": {
-    "tailwind": "npx tailwindcss -i ./assets/css/site.css -c ./assets/css/tailwind.config.js -o ./assets/css/style.css --jit --watch",
+    "tailwind": "npx tailwindcss -i ./assets/css/site.css -c ./assets/css/tailwind.config.js -o ./assets/css/style.css --jit --watch --minify",
     "build": "wp-scripts build"
   },
   "author": "kurtkungz",
