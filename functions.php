@@ -431,7 +431,7 @@ function lorem_css_customizer() {
 	$css .= '.widget-primary h2{';
 	if ( ! empty( get_theme_mod( 'header_widget_text_color_setting' ) ) ) {
 		$color = get_theme_mod( 'header_widget_text_color_setting' );
-		$css   .= "color:{$color};";
+		$css   .= "color:{$color} !important;";
 	}
 	if ( ! empty( get_theme_mod( 'header_widget_color_setting' ) ) ) {
 		$color = get_theme_mod( 'header_widget_color_setting' );
