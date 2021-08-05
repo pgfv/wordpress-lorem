@@ -512,6 +512,19 @@ function widget_theme_customizer( $wp_customizer ) {
 		'section'  => 'widget_customizer',
 		'settings' => 'bullet_widget_color_setting',
 	) ) );
+
+	// font color
+	$wp_customizer->add_setting( 'font_primary_widget_color_setting', array(
+		'default' => '#374151',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'font_primary_widget_color_control',
+		array(
+			'label'    => 'Font Color',
+			'section'  => 'widget_customizer',
+			'settings' => 'font_widget_color_setting',
+		) ) );
+
 }
 
 function lorem_widgets_init() {
@@ -551,7 +564,14 @@ function lorem_css_customizer() {
 	}
 	$css .= '}';
 
-	$css .= '.main-content p{';
+	$css .= '.prose{';
+	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
+		$color = get_theme_mod( 'font_color_setting' );
+		$css   .= "color:{$color};";
+	}
+	$css .= '}';
+
+	$css .= '.main-content p,.main-content li{';
 	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
 		$color = get_theme_mod( 'font_color_setting' );
 		$css   .= "color:{$color};";
@@ -643,6 +663,13 @@ function lorem_css_customizer() {
 	if ( ! empty( get_theme_mod( 'bullet_widget_color_setting' ) ) ) {
 		$color = get_theme_mod( 'bullet_widget_color_setting' );
 		$css   .= "background-color:{$color} !important;";
+	}
+	$css .= '}';
+
+	$css .= '.widget-primary.prose{';
+	if ( ! empty( get_theme_mod( 'font_primary_widget_color_control' ) ) ) {
+		$color = get_theme_mod( 'font_primary_widget_color_control' );
+		$css   .= "color:{$color};";
 	}
 	$css .= '}';
 

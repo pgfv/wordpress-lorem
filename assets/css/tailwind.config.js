@@ -7,7 +7,15 @@ module.exports = {
         // fontFamily: {
         //     'sans': ['Montserrat', 'Sarabun', ...defaultTheme.fontFamily.sans],
         // },
-        extend: {},
+        extend: {
+            typography: {
+                DEFAULT: {
+                    css: {
+                        color: '',
+                    }
+                }
+            }
+        },
     },
     variants: {
         extend: {},
