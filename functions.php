@@ -423,6 +423,17 @@ function colors_theme_customizer( $wp_customizer ) {
 		'settings' => 'font_color_setting',
 	) ) );
 
+	// theme color: archer
+	$wp_customizer->add_setting( 'archer_color_setting', array(
+		'default' => '#374151',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'archer_color_control', array(
+		'label'    => 'Archer',
+		'section'  => 'theme_colors',
+		'settings' => 'archer_color_setting',
+	) ) );
+
 	// theme color: h1
 	$wp_customizer->add_setting( 'h1_color_setting', array(
 		'default' => '#111827',
@@ -533,6 +544,13 @@ function lorem_css_customizer() {
 
 	$css .= '}';
 
+	$css .= 'a{';
+	if ( ! empty( get_theme_mod( 'archer_color_setting' ) ) ) {
+		$color = get_theme_mod( 'archer_color_setting' );
+		$css   .= "color:{$color} !important;";
+	}
+	$css .= '}';
+
 	$css .= '.main-content p{';
 	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
 		$color = get_theme_mod( 'font_color_setting' );
@@ -544,7 +562,14 @@ function lorem_css_customizer() {
 	}
 	$css .= '}';
 
-	$css .= '.main-content h1{';
+	$css .= '.main-content strong{';
+	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
+		$color = get_theme_mod( 'font_color_setting' );
+		$css   .= "color:{$color};";
+	}
+	$css .= '}';
+
+	$css .= '.main-content h1,.main-content h1 strong{';
 	if ( ! empty( get_theme_mod( 'h1_color_setting' ) ) ) {
 		$color = get_theme_mod( 'h1_color_setting' );
 		$css   .= "color:{$color} !important;";
@@ -555,7 +580,7 @@ function lorem_css_customizer() {
 	}
 	$css .= '}';
 
-	$css .= '.main-content h2{';
+	$css .= '.main-content h2,.main-content h2 strong{';
 	if ( ! empty( get_theme_mod( 'h2_color_setting' ) ) ) {
 		$color = get_theme_mod( 'h2_color_setting' );
 		$css   .= "color:{$color} !important;";
@@ -566,7 +591,7 @@ function lorem_css_customizer() {
 	}
 	$css .= '}';
 
-	$css .= '.main-content h3{';
+	$css .= '.main-content h3,.main-content h3 strong{';
 	if ( ! empty( get_theme_mod( 'h3_color_setting' ) ) ) {
 		$color = get_theme_mod( 'h3_color_setting' );
 		$css   .= "color:{$color};";
