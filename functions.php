@@ -155,6 +155,74 @@ function font_theme_customizer( $wp_customizer ) {
 		),
 	) ) );
 
+
+	$font_sizes = array(
+		'0.75rem|1rem'     => 'xs',
+		'0.875rem|1.25rem' => 'sm',
+		'1rem|1.5rem'      => 'base',
+		'1.125rem|1.75rem' => 'lg',
+		'1.25rem|1.75rem'  => 'xl',
+		'1.5rem|2rem'      => '2xl',
+		'1.875rem|2.25rem' => '3xl',
+		'2.25rem|2.5rem'   => '4xl',
+		'3rem|1'           => '5xl',
+		'3.75rem|1'        => '6xl',
+		'4.5rem|1'         => '7xl',
+		'6rem|1'           => '8xl',
+		'8rem|1'           => '9xl',
+	);
+
+	// font size
+	$wp_customizer->add_setting( 'font_size_setting', array(
+		'default' => '1rem|1.5rem',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'font_size_control', array(
+		'label'    => 'Font Size',
+		'section'  => 'theme_colors',
+		'settings' => 'font_size_setting',
+		'type'     => 'select',
+		'choices'  => $font_sizes,
+	) ) );
+
+	// theme setting: h1 size
+	$wp_customizer->add_setting( 'h1_size_setting', array(
+		'default' => '1.875rem|2.25rem',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'h1_size_control', array(
+		'label'    => 'H1 Size',
+		'section'  => 'theme_colors',
+		'settings' => 'h1_size_setting',
+		'type'     => 'select',
+		'choices'  => $font_sizes,
+	) ) );
+
+	// theme setting: h2 size
+	$wp_customizer->add_setting( 'h2_size_setting', array(
+		'default' => '1.5rem|2rem',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'h2_size_control', array(
+		'label'    => 'H2 Size',
+		'section'  => 'theme_colors',
+		'settings' => 'h2_size_setting',
+		'type'     => 'select',
+		'choices'  => $font_sizes,
+	) ) );
+
+	// theme setting: h3 size
+	$wp_customizer->add_setting( 'h3_size_setting', array(
+		'default' => '1.5rem|2rem',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'h3_size_control', array(
+		'label'    => 'H3 Size',
+		'section'  => 'theme_colors',
+		'settings' => 'h3_size_setting',
+		'type'     => 'select',
+		'choices'  => $font_sizes,
+	) ) );
 }
 
 function footer_theme_customizer( $wp_customizer ) {
@@ -355,35 +423,6 @@ function colors_theme_customizer( $wp_customizer ) {
 		'settings' => 'font_color_setting',
 	) ) );
 
-	$font_sizes = array(
-		'0.75rem|1rem'     => 'xs',
-		'0.875rem|1.25rem' => 'sm',
-		'1rem|1.5rem'      => 'base',
-		'1.125rem|1.75rem' => 'lg',
-		'1.25rem|1.75rem'  => 'xl',
-		'1.5rem|2rem'      => '2xl',
-		'1.875rem|2.25rem' => '3xl',
-		'2.25rem|2.5rem'   => '4xl',
-		'3rem|1'           => '5xl',
-		'3.75rem|1'        => '6xl',
-		'4.5rem|1'         => '7xl',
-		'6rem|1'           => '8xl',
-		'8rem|1'           => '9xl',
-	);
-
-	// theme setting: font size
-	$wp_customizer->add_setting( 'font_size_setting', array(
-		'default' => '1rem|1.5rem',
-	) );
-
-	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'font_size_control', array(
-		'label'    => 'Font Size',
-		'section'  => 'theme_colors',
-		'settings' => 'font_size_setting',
-		'type'     => 'select',
-		'choices'  => $font_sizes,
-	) ) );
-
 	// theme color: h1
 	$wp_customizer->add_setting( 'h1_color_setting', array(
 		'default' => '#111827',
@@ -393,19 +432,6 @@ function colors_theme_customizer( $wp_customizer ) {
 		'label'    => 'H1',
 		'section'  => 'theme_colors',
 		'settings' => 'h1_color_setting',
-	) ) );
-
-	// theme setting: h1 size
-	$wp_customizer->add_setting( 'h1_size_setting', array(
-		'default' => '1.875rem|2.25rem',
-	) );
-
-	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'h1_size_control', array(
-		'label'    => 'H1 Size',
-		'section'  => 'theme_colors',
-		'settings' => 'h1_size_setting',
-		'type'     => 'select',
-		'choices'  => $font_sizes,
 	) ) );
 
 	// theme color: h2
@@ -419,19 +445,6 @@ function colors_theme_customizer( $wp_customizer ) {
 		'settings' => 'h2_color_setting',
 	) ) );
 
-	// theme setting: h2 size
-	$wp_customizer->add_setting( 'h2_size_setting', array(
-		'default' => '1.5rem|2rem',
-	) );
-
-	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'h2_size_control', array(
-		'label'    => 'H2 Size',
-		'section'  => 'theme_colors',
-		'settings' => 'h2_size_setting',
-		'type'     => 'select',
-		'choices'  => $font_sizes,
-	) ) );
-
 	// theme color: h3
 	$wp_customizer->add_setting( 'h3_color_setting', array(
 		'default' => '#111827',
@@ -441,19 +454,6 @@ function colors_theme_customizer( $wp_customizer ) {
 		'label'    => 'H3',
 		'section'  => 'theme_colors',
 		'settings' => 'h3_color_setting',
-	) ) );
-
-	// theme setting: h3 size
-	$wp_customizer->add_setting( 'h3_size_setting', array(
-		'default' => '1.5rem|2rem',
-	) );
-
-	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'h3_size_control', array(
-		'label'    => 'H3 Size',
-		'section'  => 'theme_colors',
-		'settings' => 'h3_size_setting',
-		'type'     => 'select',
-		'choices'  => $font_sizes,
 	) ) );
 }
 
