@@ -1,4 +1,6 @@
 <?php
+$theme = wp_get_theme();
+define( 'THEME_VERSION', $theme->version );
 
 if ( function_exists( 'add_theme_support' ) ) {
 	add_theme_support( 'title-tag' );
@@ -27,7 +29,8 @@ function register_menus() {
 }
 
 function register_custom_style() {
-	wp_register_style( 'tailwind', get_template_directory_uri() . '/assets/css/style.css', array(), '1.0', 'all' );
+	wp_register_style( 'tailwind', get_template_directory_uri() . '/assets/css/style.css', array(), THEME_VERSION,
+		'all' );
 	wp_enqueue_style( 'tailwind' );
 }
 
