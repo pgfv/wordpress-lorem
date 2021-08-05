@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
     <meta name="description" content="<?php bloginfo( 'description' ); ?>"/>
 
+	<?php $english_font = get_theme_mod( 'font_english_setting', 'Montserrat:wght@400;700' ); ?>
+	<?php $thai_font = get_theme_mod( 'font_thai_setting', 'Sarabun:wght@400;700' ) ?>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=<?php echo $english_font; ?>&family=<?php echo $thai_font; ?>&display=swap"
+          rel="stylesheet">
+
 	<?php wp_head(); ?>
     <style type="text/css">
         <?php echo lorem_css_customizer(); ?>
