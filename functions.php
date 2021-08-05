@@ -108,7 +108,7 @@ function menu_with_count( $location ) {
 	return array( $html, $count );
 }
 
-function header_footer_theme_customizer( $wp_customizer ) {
+function footer_theme_customizer( $wp_customizer ) {
 	// header & footer
 	$wp_customizer->add_section( 'header_footer', array(
 		'title'       => __( 'Footer Settings', 'lorem' ),
@@ -442,6 +442,16 @@ function widget_theme_customizer( $wp_customizer ) {
 			'section'  => 'widget_customizer',
 			'settings' => 'header_widget_text_color_setting',
 		) ) );
+
+	$wp_customizer->add_setting( 'bullet_widget_color_setting', array(
+		'default' => '#d1d5db',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'bullet_widget_color_control', array(
+		'label'    => 'Bullet Color',
+		'section'  => 'widget_customizer',
+		'settings' => 'bullet_widget_color_setting',
+	) ) );
 }
 
 function lorem_widgets_init() {
@@ -541,6 +551,13 @@ function lorem_css_customizer() {
 	}
 	$css .= '}';
 
+	$css .= '.widget-primary.prose ul>li:before{';
+	if ( ! empty( get_theme_mod( 'bullet_widget_color_setting' ) ) ) {
+		$color = get_theme_mod( 'bullet_widget_color_setting' );
+		$css   .= "background-color:{$color} !important;";
+	}
+	$css .= '}';
+
 	return $css;
 }
 
@@ -551,7 +568,7 @@ add_action( 'after_setup_theme', 'add_image_sizes' );
 add_action( 'wp_enqueue_scripts', 'register_custom_style' );
 add_action( 'wp_enqueue_scripts', 'register_google_fonts' );
 add_action( 'wp_enqueue_scripts', 'dequeue_plugin_style', 999 );
-add_action( 'customize_register', 'header_footer_theme_customizer' );
+add_action( 'customize_register', 'footer_theme_customizer' );
 add_action( 'customize_register', 'colors_theme_customizer' );
 add_action( 'customize_register', 'widget_theme_customizer' );
 
