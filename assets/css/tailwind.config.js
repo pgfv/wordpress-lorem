@@ -12,6 +12,9 @@ module.exports = {
                 DEFAULT: {
                     css: {
                         color: '',
+                        strong: {
+                            color: '',
+                        }
                     }
                 }
             }
