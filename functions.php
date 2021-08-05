@@ -465,7 +465,7 @@ function lorem_widgets_init() {
 	register_sidebar( array(
 		'id'            => 'footer',
 		'name'          => __( 'Footer Sidebar', 'lorem' ),
-		'before_widget' => '<section id="%1$s" class="widget widget-footer prose max-w-none %2$s">',
+		'before_widget' => '<section id="%1$s" class="widget widget-footer prose max-w-none mb-10 %2$s">',
 		'after_widget'  => '</section>',
 	) );
 }
@@ -527,6 +527,7 @@ function lorem_css_customizer() {
 	$css .= '}';
 
 	$css .= '.footer-content h1,.footer-content h2,.footer-content h3{';
+	$css .= 'margin-top:0 !important;';
 	if ( ! empty ( get_theme_mod( 'footer_header_color_setting' ) ) ) {
 		$color = get_theme_mod( 'footer_header_color_setting' );
 		$css   .= "color:{$color};";
