@@ -14,6 +14,9 @@ module.exports = {
                         color: '',
                         strong: {
                             color: '',
+                        },
+                        a: {
+                            color: '',
                         }
                     }
                 }
