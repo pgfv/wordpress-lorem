@@ -4,9 +4,9 @@ module.exports = {
     purge: ['./**/*.php'],
     darkMode: false, // or 'media' or 'class'
     theme: {
-        fontFamily: {
-            'sans': ['Montserrat', 'Sarabun', ...defaultTheme.fontFamily.sans],
-        },
+        // fontFamily: {
+        //     'sans': ['Montserrat', 'Sarabun', ...defaultTheme.fontFamily.sans],
+        // },
         extend: {},
     },
     variants: {

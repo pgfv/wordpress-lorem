@@ -31,11 +31,13 @@ function register_custom_style() {
 	wp_enqueue_style( 'tailwind' );
 }
 
-function register_google_fonts() {
-	wp_enqueue_style( 'google-fonts',
-		'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Sarabun:wght@400;700&display=swap',
-		false, null );
-}
+//function register_google_fonts() {
+//	$thai_font = get_theme_mod( 'font_thai_setting', 'Sarabun:wght@400;700' );
+//
+//	wp_enqueue_style( 'google-fonts',
+//		"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family={$thai_font}&display=swap",
+//		false, null );
+//}
 
 function dequeue_plugin_style() {
 	wp_dequeue_style( 'dashicons' );
@@ -106,6 +108,53 @@ function menu_with_count( $location ) {
 	$count = substr_count( $html, '<a' );
 
 	return array( $html, $count );
+}
+
+function font_theme_customizer( $wp_customizer ) {
+	$wp_customizer->add_section( 'font_customizer', array(
+		'title'       => __( 'Font Settings', 'lorem' ),
+		'description' => __( 'Font customizer', 'lorem' ),
+		'priority'    => 99,
+	) );
+
+	// font thai
+	$wp_customizer->add_setting( 'font_thai_setting', array(
+		'default' => 'Sarabun:wght@400;700',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'font_thai_control', array(
+		'label'    => 'Thai Font',
+		'section'  => 'font_customizer',
+		'settings' => 'font_thai_setting',
+		'type'     => 'select',
+		'choices'  => array(
+			'Sarabun:wght@400;700' => 'Sarabun',
+			'Prompt:wght@400;700'  => 'Prompt',
+			'Kanit:wght@400;700'   => 'Kanit',
+			'Mitr:wght@400;700'    => 'Mitr',
+			'K2D:wght@400;700'     => 'K2D',
+		),
+	) ) );
+
+	// font english
+	$wp_customizer->add_setting( 'font_english_setting', array(
+		'default' => 'Montserrat:wght@400;700',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'font_english_control', array(
+		'label'    => 'English Font',
+		'section'  => 'font_customizer',
+		'settings' => 'font_english_setting',
+		'type'     => 'select',
+		'choices'  => array(
+			'Roboto:wght@400;700'     => 'Roboto',
+			'Open+Sans:wght@400;700'  => 'Open Sans',
+			'Lato:wght@400;700'       => 'Lato',
+			'Montserrat:wght@400;700' => 'Montserrat',
+			'Hahmlet:wght@400;700'    => 'Hahmlet',
+		),
+	) ) );
+
 }
 
 function footer_theme_customizer( $wp_customizer ) {
@@ -471,7 +520,20 @@ function lorem_widgets_init() {
 }
 
 function lorem_css_customizer() {
-	$css = '.main-content p{';
+	$css = 'html{';
+
+	$english_font = explode( ":", get_theme_mod( 'font_english_setting', 'Montserrat:wght@400;700' ) )[0];
+	if ( strpos( $english_font, '+' ) ) {
+		$english_font = str_replace( '+', ' ', $english_font );
+		$english_font = '"' . $english_font . '"';
+	}
+
+	$thai_font = explode( ":", get_theme_mod( 'font_thai_setting', 'Sarabun:wght@400;700' ) )[0];
+	$css       .= "font-family:{$english_font},{$thai_font},sans-serif;";
+
+	$css .= '}';
+
+	$css .= '.main-content p{';
 	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
 		$color = get_theme_mod( 'font_color_setting' );
 		$css   .= "color:{$color};";
@@ -567,8 +629,9 @@ add_action( 'init', 'register_menus' );
 add_action( 'init', 'lorem_widgets_init' );
 add_action( 'after_setup_theme', 'add_image_sizes' );
 add_action( 'wp_enqueue_scripts', 'register_custom_style' );
-add_action( 'wp_enqueue_scripts', 'register_google_fonts' );
+//add_action( 'wp_enqueue_scripts', 'register_google_fonts' );
 add_action( 'wp_enqueue_scripts', 'dequeue_plugin_style', 999 );
+add_action( 'customize_register', 'font_theme_customizer' );
 add_action( 'customize_register', 'footer_theme_customizer' );
 add_action( 'customize_register', 'colors_theme_customizer' );
 add_action( 'customize_register', 'widget_theme_customizer' );
