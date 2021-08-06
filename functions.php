@@ -312,6 +312,17 @@ function footer_theme_customizer( $wp_customizer ) {
 		'settings' => 'footer_p_color_setting',
 	) ) );
 
+	// footer p color
+	$wp_customizer->add_setting( 'footer_a_color_setting', array(
+		'default' => '#d1d5db',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'footer_a_color_control', array(
+		'label'    => 'Archer Color',
+		'section'  => 'header_footer',
+		'settings' => 'footer_a_color_setting',
+	) ) );
+
 	// footer bullet color
 	$wp_customizer->add_setting( 'footer_bullet_setting', array(
 		'default' => '#d1d5db',
@@ -665,10 +676,21 @@ function lorem_css_customizer() {
 	}
 	$css .= '}';
 
-	$css .= '.footer-content p,.footer-content a{';
+	$css .= '.footer-content p{';
 	if ( ! empty( get_theme_mod( 'footer_p_size_setting' ) ) ) {
 		$size = explode( "|", get_theme_mod( 'footer_p_size_setting' ) );
 		$css  .= "font-size:{$size[0]};line-height:{$size[1]};";
+	}
+	$css .= '}';
+
+	$css .= '.footer-content a{';
+	if ( ! empty( get_theme_mod( 'footer_p_size_setting' ) ) ) {
+		$size = explode( "|", get_theme_mod( 'footer_p_size_setting' ) );
+		$css  .= "font-size:{$size[0]};line-height:{$size[1]};";
+	}
+	if ( ! empty( get_theme_mod( 'footer_a_color_setting' ) ) ) {
+		$color = get_theme_mod( 'footer_a_color_setting' );
+		$css   .= "color:{$color};";
 	}
 	$css .= '}';
 
