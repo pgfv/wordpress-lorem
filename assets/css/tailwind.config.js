@@ -17,6 +17,9 @@ module.exports = {
                         },
                         a: {
                             color: '',
+                        },
+                        'ol > li::before': {
+                            color: '',
                         }
                     }
                 }
