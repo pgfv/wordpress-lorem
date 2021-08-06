@@ -301,6 +301,16 @@ function footer_theme_customizer( $wp_customizer ) {
 		),
 	) ) );
 
+	// footer p color
+	$wp_customizer->add_setting( 'footer_p_color_setting', array(
+		'default' => '#d1d5db',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'footer_p_color_control', array(
+		'label'    => 'Paragraph Color',
+		'section'  => 'header_footer',
+		'settings' => 'footer_p_color_setting',
+	) ) );
 
 	// footer bullet color
 	$wp_customizer->add_setting( 'footer_bullet_setting', array(
@@ -633,6 +643,13 @@ function lorem_css_customizer() {
 	if ( ! empty( get_theme_mod( 'header_widget_color_setting' ) ) ) {
 		$color = get_theme_mod( 'header_widget_color_setting' );
 		$css   .= "background-color:{$color};";
+	}
+	$css .= '}';
+
+	$css .= '.footer-content{';
+	if ( ! empty( get_theme_mod( 'footer_p_color_setting' ) ) ) {
+		$color = get_theme_mod( 'footer_p_color_setting' );
+		$css   .= "color:{$color};";
 	}
 	$css .= '}';
 

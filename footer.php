@@ -14,7 +14,7 @@
         </div>
     </section>
 
-    <p class="text-center text-xs pt-3 md:text-sm"><?php echo get_theme_mod( 'copyright_text_setting' ) ?></p>
+    <div class="text-center text-xs pt-3"><?php echo get_theme_mod( 'copyright_text_setting' ) ?></div>
 
     <section class="mobile-menu fixed bottom-0 py-5 container md:hidden"
              style="background-color: <?php echo get_theme_mod( 'footer_mobile_color_setting' ); ?>;">
