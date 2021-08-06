@@ -584,7 +584,7 @@ function lorem_css_customizer() {
 	$css .= 'a{';
 	if ( ! empty( get_theme_mod( 'archer_color_setting' ) ) ) {
 		$color = get_theme_mod( 'archer_color_setting' );
-		$css   .= "color:{$color} !important;";
+		$css   .= "color:{$color};";
 	}
 	$css .= '}';
 
