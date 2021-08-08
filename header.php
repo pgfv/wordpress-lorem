@@ -41,7 +41,9 @@
                         }
                     </script>
 
-                    <label id="show-button" for="nav-toggle" class="block sm:hidden" onclick="menuToggle()">
+                    <label id="show-button" for="nav-toggle" class="block sm:hidden"
+                           style="color:<?php echo get_theme_mod( 'header_hamburger_color_setting' ) ?>;"
+                           onclick="menuToggle()">
                         <svg class="fill-current h-4 w-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <title>Menu Open</title>
                             <path d="M0 3h20v2H0V3z m0 6h20v2H0V9z m0 6h20v2H0V0z"/>
@@ -59,7 +61,7 @@
 
             <section class="pb-3 md:py-5 flex items-center">
 				<?php $register_menu = register_menu(); ?>
-                <nav class="flex flex-row justify-evenly md:space-x-5">
+                <nav class="flex flex-row justify-evenly w-full md:space-x-5">
 					<?php echo $register_menu[0] ?>
                 </nav>
             </section>

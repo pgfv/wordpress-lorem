@@ -16,7 +16,7 @@
 
     <div class="text-center text-xs pt-3"><?php echo get_theme_mod( 'copyright_text_setting' ) ?></div>
 
-    <section class="mobile-menu fixed bottom-0 py-5 container md:hidden"
+    <section class="mobile-menu fixed bottom-0 py-5 w-full md:hidden"
              style="background-color: <?php echo get_theme_mod( 'footer_mobile_color_setting' ); ?>;">
 		<?php $mobile_menu = mobile_menu(); ?>
         <nav class="flex flex-row justify-evenly text-gray-300 text-sm px-3">
