@@ -3,7 +3,6 @@
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>"/>
     <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-    <meta name="description" content="<?php bloginfo( 'description' ); ?>"/>
 
 	<?php $english_font = get_theme_mod( 'font_english_setting', 'Montserrat:wght@400;700' ); ?>
 	<?php $thai_font = get_theme_mod( 'font_thai_setting', 'Sarabun:wght@400;700' ) ?>
@@ -18,10 +17,32 @@
     </style>
 </head>
 <body <?php body_class(); ?>>
+
+<section>
+	<?php for ( $i = 1; $i <= 4; $i ++ ) :
+		if ( is_active_sidebar( "sticky_widget_{$i}" ) ):
+			$hw = get_theme_mod( "sticky_widget_{$i}_position_horizontal_setting", 'right' );
+			$vw = get_theme_mod( "sticky_widget_{$i}_position_vertical_setting", 'top' );
+			$hide_mobile = get_theme_mod( "sticky_widget_{$i}_hide_mobile_setting", false );
+			$hide_pc = get_theme_mod( "sticky_widget_{$i}_hide_pc_setting", false );
+			?>
+            <div id="sticky-widget-<?php echo $i; ?>"
+                 class="fixed z-10 flex-col <?php echo sticky_widget_style( $hw, $vw, $hide_mobile, $hide_pc ); ?>">
+                <button class="text-sm text-right text-red-700"
+                        onclick="document.getElementById('sticky-widget-<?php echo $i; ?>').style.display = 'none';">
+                    close
+                </button>
+				<?php dynamic_sidebar( "sticky_widget_{$i}" ); ?>
+            </div>
+		<?php endif; ?>
+	<?php endfor; ?>
+</section>
+
 <!-- wrapper -->
 <section class="flex flex-col min-h-screen"
-         style="background-color: <?php echo get_theme_mod( 'background_color_setting' ); ?>;">
-    <header class="flex flex-col mb-10"
+         style="background-color:<?php echo get_theme_mod( 'background_color_setting' ); ?>;">
+
+    <header class="flex flex-col md:mb-10"
             style="background-color:<?php echo get_theme_mod( 'header_color_setting' ); ?>;">
 
         <section class="flex flex-col md:flex-row justify-between main-container">
@@ -59,18 +80,27 @@
                 </div>
             </section>
 
-            <section class="pb-3 md:py-5 flex items-center">
+			<?php $sticky_register = get_theme_mod( 'header_sticky_register_setting' ); ?>
+            <section class="pb-3 md:py-5 md:flex items-center<?php if ( $sticky_register ): ?> hidden<?php endif; ?>">
 				<?php $register_menu = register_menu(); ?>
                 <nav class="flex flex-row justify-evenly w-full md:space-x-5">
 					<?php echo $register_menu[0] ?>
                 </nav>
             </section>
         </section>
-
-
-        <section id="nav-menu" class="header-menu hidden md:block"
+        <section id="nav-menu" class="header-menu "
                  style="background-color:<?php echo get_theme_mod( 'header_menu_color_setting' ) ?>;">
-            <nav class="main-container py-5"><?php echo header_menu_list(); ?></nav>
+			<?php echo header_menu_list(); ?>
         </section>
     </header>
+
+	<?php if ( $sticky_register ): ?>
+        <section class="block md:hidden sticky top-0 mb-5">
+			<?php $register_menu = register_menu(); ?>
+            <nav class="flex flex-row justify-evenly w-full md:space-x-5">
+				<?php echo $register_menu[0] ?>
+            </nav>
+        </section>
+	<?php endif; ?>
+
     <main role="main" class="flex-1 main-container">
