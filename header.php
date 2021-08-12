@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=<?php echo $english_font; ?>&family=<?php echo $thai_font; ?>&display=swap"
-          rel="stylesheet">
+          rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');">
 
 	<?php wp_head(); ?>
     <style type="text/css">

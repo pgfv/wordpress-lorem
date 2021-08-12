@@ -34,14 +34,6 @@ function register_custom_style() {
 	wp_enqueue_style( 'tailwind' );
 }
 
-//function register_google_fonts() {
-//	$thai_font = get_theme_mod( 'font_thai_setting', 'Sarabun:wght@400;700' );
-//
-//	wp_enqueue_style( 'google-fonts',
-//		"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family={$thai_font}&display=swap",
-//		false, null );
-//}
-
 function dequeue_plugin_style() {
 	wp_dequeue_style( 'dashicons' );
 	wp_dequeue_style( 'font-awesome' );

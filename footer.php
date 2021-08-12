@@ -4,14 +4,18 @@
     <section class="flex flex-col md:flex-row md:space-x-10 mb-5 main-container">
 		<?php
 		$column   = get_theme_mod( 'footer_column_setting' );
-		$column_1 = 'md:w-1/3';
-		$column_2 = 'md:w-1/3';
+		$column_1 = 'md:w-1/2';
+		$column_2 = 'md:w-1/2';
 		$column_3 = 'md:w-1/3';
 
 		if ( $column == 3 ) {
 			// check layout
 			$layout = get_theme_mod( 'footer_3_columns_layout_setting' );
 			switch ( $layout ) {
+				case '1|1|1':
+					$column_1 = 'md:w-1/3';
+					$column_2 = 'md:w-1/3';
+					$column_3 = 'md:w-1/3';
 				case '1|1|2':
 					$column_1 = 'md:w-1/4';
 					$column_2 = 'md:w-1/4';
