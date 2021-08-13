@@ -2,6 +2,23 @@
 $theme = wp_get_theme();
 define( 'THEME_VERSION', $theme->version );
 
+$font_sizes = array(
+	'0.75rem|1rem'     => 'xs',
+	'0.875rem|1.25rem' => 'sm',
+	'1rem|1.5rem'      => 'base',
+	'1.125rem|1.75rem' => 'lg',
+	'1.25rem|1.75rem'  => 'xl',
+	'1.5rem|2rem'      => '2xl',
+	'1.875rem|2.25rem' => '3xl',
+	'2.25rem|2.5rem'   => '4xl',
+	'3rem|1'           => '5xl',
+	'3.75rem|1'        => '6xl',
+	'4.5rem|1'         => '7xl',
+	'6rem|1'           => '8xl',
+	'8rem|1'           => '9xl',
+);
+define( 'THEME_FONT_SIZE', $font_sizes );
+
 if ( function_exists( 'add_theme_support' ) ) {
 	add_theme_support( 'title-tag' );
 	add_theme_support( 'menus' );
@@ -152,23 +169,6 @@ function font_theme_customizer( $wp_customizer ) {
 		),
 	) ) );
 
-
-	$font_sizes = array(
-		'0.75rem|1rem'     => 'xs',
-		'0.875rem|1.25rem' => 'sm',
-		'1rem|1.5rem'      => 'base',
-		'1.125rem|1.75rem' => 'lg',
-		'1.25rem|1.75rem'  => 'xl',
-		'1.5rem|2rem'      => '2xl',
-		'1.875rem|2.25rem' => '3xl',
-		'2.25rem|2.5rem'   => '4xl',
-		'3rem|1'           => '5xl',
-		'3.75rem|1'        => '6xl',
-		'4.5rem|1'         => '7xl',
-		'6rem|1'           => '8xl',
-		'8rem|1'           => '9xl',
-	);
-
 	// font size
 	$wp_customizer->add_setting( 'font_size_setting', array(
 		'default' => '1rem|1.5rem',
@@ -179,7 +179,7 @@ function font_theme_customizer( $wp_customizer ) {
 		'section'  => 'theme_colors',
 		'settings' => 'font_size_setting',
 		'type'     => 'select',
-		'choices'  => $font_sizes,
+		'choices'  => THEME_FONT_SIZE,
 	) ) );
 
 	// theme setting: h1 size
@@ -192,7 +192,7 @@ function font_theme_customizer( $wp_customizer ) {
 		'section'  => 'theme_colors',
 		'settings' => 'h1_size_setting',
 		'type'     => 'select',
-		'choices'  => $font_sizes,
+		'choices'  => THEME_FONT_SIZE,
 	) ) );
 
 	// theme setting: h2 size
@@ -205,7 +205,7 @@ function font_theme_customizer( $wp_customizer ) {
 		'section'  => 'theme_colors',
 		'settings' => 'h2_size_setting',
 		'type'     => 'select',
-		'choices'  => $font_sizes,
+		'choices'  => THEME_FONT_SIZE,
 	) ) );
 
 	// theme setting: h3 size
@@ -218,15 +218,23 @@ function font_theme_customizer( $wp_customizer ) {
 		'section'  => 'theme_colors',
 		'settings' => 'h3_size_setting',
 		'type'     => 'select',
-		'choices'  => $font_sizes,
+		'choices'  => THEME_FONT_SIZE,
 	) ) );
 }
 
 function header_theme_customizer( $wp_customizer ) {
-	$wp_customizer->add_section( 'header_customizer', array(
-		'title'       => __( 'Header Setting', 'lorem' ),
-		'description' => __( 'Header Customizer', 'lorem' ),
-		'priority'    => 100,
+	$wp_customizer->add_panel( 'header_customizer_panel', array(
+		'title'       => __( 'Header Settings', 'lorem' ),
+		'description' => __( 'Header customizer', 'lorem' ),
+		'priority'    => 101,
+		'capability'  => 'edit_theme_options',
+	) );
+
+	$wp_customizer->add_section( 'header_color_section', array(
+		'title'       => __( 'Header Color', 'lorem' ),
+		'description' => __( 'Header color customizer', 'lorem' ),
+		'priority'    => 1,
+		'panel'       => 'header_customizer_panel',
 	) );
 
 	// theme color: header
@@ -236,9 +244,21 @@ function header_theme_customizer( $wp_customizer ) {
 
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'header_color_control', array(
 		'label'    => 'Header',
-		'section'  => 'header_customizer',
+		'section'  => 'header_color_section',
 		'settings' => 'header_color_setting',
 	) ) );
+
+	// header gradient to
+	$wp_customizer->add_setting( 'header_color_gradient_to_setting', array(
+		'default' => '#9CA3AF',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'header_color_gradient_to_control',
+		array(
+			'label'    => 'Header Gradient To',
+			'section'  => 'header_color_section',
+			'settings' => 'header_color_gradient_to_setting',
+		) ) );
 
 	// theme color: header menu
 	$wp_customizer->add_setting( 'header_menu_color_setting', array(
@@ -247,7 +267,7 @@ function header_theme_customizer( $wp_customizer ) {
 
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'header_menu_color_control', array(
 		'label'    => 'Header Menu',
-		'section'  => 'header_customizer',
+		'section'  => 'header_color_section',
 		'settings' => 'header_menu_color_setting',
 	) ) );
 
@@ -259,9 +279,16 @@ function header_theme_customizer( $wp_customizer ) {
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'header_hamburger_color_control',
 		array(
 			'label'    => 'Hamburger Color',
-			'section'  => 'header_customizer',
+			'section'  => 'header_color_section',
 			'settings' => 'header_hamburger_color_setting',
 		) ) );
+
+	$wp_customizer->add_section( 'header_archer_section', array(
+		'title'       => 'Header Archer',
+		'description' => 'Archer customizer',
+		'priority'    => 2,
+		'panel'       => 'header_customizer_panel',
+	) );
 
 	// archer text color
 	$wp_customizer->add_setting( 'header_menu_archer_text_color_setting', array(
@@ -271,8 +298,8 @@ function header_theme_customizer( $wp_customizer ) {
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
 		'header_menu_archer_text_color_control',
 		array(
-			'label'    => 'Header Menu Archer Text Color',
-			'section'  => 'header_customizer',
+			'label'    => 'Text Color',
+			'section'  => 'header_archer_section',
 			'settings' => 'header_menu_archer_text_color_setting',
 		) ) );
 
@@ -284,8 +311,8 @@ function header_theme_customizer( $wp_customizer ) {
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
 		'header_menu_archer_text_color_hover_control',
 		array(
-			'label'    => 'Header Menu Archer Text Color When Hover',
-			'section'  => 'header_customizer',
+			'label'    => 'Hover Text Color',
+			'section'  => 'header_archer_section',
 			'settings' => 'header_menu_archer_text_color_hover_setting',
 		) ) );
 
@@ -297,8 +324,8 @@ function header_theme_customizer( $wp_customizer ) {
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
 		'header_menu_archer_background_control',
 		array(
-			'label'    => 'Header Menu Archer Background Color',
-			'section'  => 'header_customizer',
+			'label'    => 'Background Color',
+			'section'  => 'header_archer_section',
 			'settings' => 'header_menu_archer_background_setting',
 		) ) );
 
@@ -311,53 +338,186 @@ function header_theme_customizer( $wp_customizer ) {
 		'header_menu_archer_background_transparent_control',
 		array(
 			'label'    => 'Use transparent for archer background color',
-			'section'  => 'header_customizer',
+			'section'  => 'header_archer_section',
 			'settings' => 'header_menu_archer_background_transparent_setting',
 			'type'     => 'checkbox',
 		) ) );
+
+	$wp_customizer->add_section( 'header_register_section', array(
+		'title'       => __( 'Register Menu', 'lorem' ),
+		'description' => __( 'Register menu customizer', 'lorem' ),
+		'panel'       => 'header_customizer_panel',
+	) );
 
 	// sticky register menu
 	$wp_customizer->add_setting( 'header_sticky_register_setting', array(
 		'default' => true,
 	) );
 
-	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_sticky_register_control', array(
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_control', array(
 		'label'    => 'Sticky Register Menu',
-		'section'  => 'header_customizer',
+		'section'  => 'header_register_section',
 		'settings' => 'header_sticky_register_setting',
 		'type'     => 'checkbox',
 	) ) );
+
+	// register button
+	$wp_customizer->add_setting( 'header_register_is_button_setting', array(
+		'default' => false,
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_is_button_control', array(
+		'label'    => 'Display as button',
+		'section'  => 'header_register_section',
+		'settings' => 'header_register_is_button_setting',
+		'type'     => 'checkbox',
+	) ) );
+
+	// register button border size
+	$wp_customizer->add_setting( 'header_register_button_border_size_setting', array(
+		'default' => '1px'
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_border_size_control',
+		array(
+			'label'    => 'Button border size',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_border_size_setting',
+			'type'     => 'text',
+		) ) );
+
+	// register button border color
+	$wp_customizer->add_setting( 'header_register_button_border_color_setting', array(
+		'default' => '#000000',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
+		'header_register_button_border_color_control',
+		array(
+			'label'    => 'Border Color',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_border_color_setting',
+		) ) );
+
+	// register button background
+	$wp_customizer->add_setting( 'header_register_button_background_setting', array(
+		'default' => '#9CA3AF',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
+		'header_register_button_background_control',
+		array(
+			'label'    => 'Background Color',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_background_setting',
+		) ) );
+
+	// register button background hover
+	$wp_customizer->add_setting( 'header_register_button_background_hover_setting', array(
+		'default' => '#9CA3AF',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
+		'header_register_button_background_hover_control',
+		array(
+			'label'    => 'Hover Background Color',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_background_hover_setting',
+		) ) );
+
+	// register button padding x, y
+	$wp_customizer->add_setting( 'header_register_button_padding_x_setting', array(
+		'default' => '10px',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_padding_x_control',
+		array(
+			'label'    => 'Button Padding Horizon',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_padding_x_setting',
+			'type'     => 'text',
+		) ) );
+
+	$wp_customizer->add_setting( 'header_register_button_padding_y_setting', array(
+		'default' => '10px',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_padding_y_control',
+		array(
+			'label'    => 'Button Padding Vertical',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_padding_y_setting',
+			'type'     => 'text',
+		) ) );
+
+	// register button text size
+	$wp_customizer->add_setting( 'header_register_button_text_size_setting', array(
+		'default' => '1rem|1.5rem',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_text_size_control',
+		array(
+			'label'    => 'Button Font Size',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_text_size_setting',
+			'type'     => 'select',
+			'choices'  => THEME_FONT_SIZE,
+		) ) );
 }
 
 function footer_theme_customizer( $wp_customizer ) {
-	// header & footer
-	$wp_customizer->add_section( 'header_footer', array(
+	$wp_customizer->add_panel( 'footer_customizer_panel', array(
 		'title'       => __( 'Footer Settings', 'lorem' ),
-		'description' => __( 'Footer Customizer' ),
-		'priority'    => 101,
+		'description' => __( 'Footer customizer', 'lorem' ),
+		'priority'    => 102,
+		'capability'  => 'edit_theme_options',
 	) );
 
-	// theme color: footer
+	$wp_customizer->add_section( 'footer_color_section', array(
+		'title'       => __( 'Footer Color', 'lorem' ),
+		'description' => __( 'Footer color customizer', 'lorem' ),
+		'panel'       => 'footer_customizer_panel',
+	) );
+
+	// footer color
 	$wp_customizer->add_setting( 'footer_color_setting', array(
 		'default' => '#9CA3AF',
 	) );
 
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'footer_color_control', array(
-		'label'    => 'Footer Background Color',
-		'section'  => 'header_footer',
+		'label'    => 'Background Color',
+		'section'  => 'footer_color_section',
 		'settings' => 'footer_color_setting',
 	) ) );
 
-	// theme color: footer mobile
+	// footer gradient to
+	$wp_customizer->add_setting( 'footer_color_gradient_to_setting', array(
+		'default' => '#9CA3AF',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'footer_color_gradient_to_control',
+		array(
+			'label'    => 'Background Gradient To',
+			'section'  => 'footer_color_section',
+			'settings' => 'footer_color_gradient_to_setting',
+		) ) );
+
+	// footer mobile color
 	$wp_customizer->add_setting( 'footer_mobile_color_setting', array(
 		'default' => '#9CA3AF',
 	) );
 
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'footer_mobile_color_control', array(
-		'label'    => 'Footer Mobile Menu Background Color',
-		'section'  => 'header_footer',
+		'label'    => 'Mobile Menu Background Color',
+		'section'  => 'footer_color_section',
 		'settings' => 'footer_mobile_color_setting',
 	) ) );
+
+	$wp_customizer->add_section( 'footer_columns_section', array(
+		'title'       => __( 'Columns', 'lorem' ),
+		'description' => __( 'Change how many columns you want to display', 'lorem' ),
+		'panel'       => 'footer_customizer_panel',
+	) );
 
 	// footer column
 	$wp_customizer->add_setting( 'footer_column_setting', array(
@@ -366,9 +526,9 @@ function footer_theme_customizer( $wp_customizer ) {
 
 	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'footer_column_control', array(
 		'label'    => 'Footer Column',
-		'section'  => 'header_footer',
+		'section'  => 'footer_columns_section',
 		'settings' => 'footer_column_setting',
-		'type'     => 'select',
+		'type'     => 'radio',
 		'choices'  => array(
 			2 => 2,
 			3 => 3,
@@ -376,16 +536,33 @@ function footer_theme_customizer( $wp_customizer ) {
 		),
 	) ) );
 
-	// footer 3 column layout
+	// footer 2 columns layout
+	$wp_customizer->add_setting( 'footer_2_columns_layout_setting', array(
+		'default' => '1|1',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'footer_2_columns_layout_control', array(
+		'label'    => 'Footer 2 Columns Layout',
+		'section'  => 'footer_columns_section',
+		'settings' => 'footer_2_columns_layout_setting',
+		'type'     => 'radio',
+		'choices'  => array(
+			'1|1' => '1 - 1',
+			'1|2' => '1 - 2',
+			'2|1' => '2 - 1',
+		),
+	) ) );
+
+	// footer 3 columns layout
 	$wp_customizer->add_setting( 'footer_3_columns_layout_setting', array(
 		'default' => '1|1|1',
 	) );
 
 	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'footer_3_columns_layout_control', array(
 		'label'    => 'Footer 3 Columns Layout',
-		'section'  => 'header_footer',
+		'section'  => 'footer_columns_section',
 		'settings' => 'footer_3_columns_layout_setting',
-		'type'     => 'select',
+		'type'     => 'radio',
 		'choices'  => array(
 			'1|1|1' => '1 - 1 - 1',
 			'1|1|2' => '1 - 1 - 2',
@@ -401,9 +578,15 @@ function footer_theme_customizer( $wp_customizer ) {
 
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'footer_header_color_control', array(
 		'label'    => 'Text Header Color',
-		'section'  => 'header_footer',
+		'section'  => 'footer_color_section',
 		'settings' => 'footer_header_color_setting',
 	) ) );
+
+	$wp_customizer->add_section( 'footer_text_section', array(
+		'title'       => __( 'Text Size', 'lorem' ),
+		'description' => __( 'Text customizer', 'lorem' ),
+		'panel'       => 'footer_customizer_panel',
+	) );
 
 	// footer header size
 	$wp_customizer->add_setting( 'footer_header_size_setting', array(
@@ -412,7 +595,7 @@ function footer_theme_customizer( $wp_customizer ) {
 
 	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'footer_header_size_control', array(
 		'label'    => 'Text Header Size',
-		'section'  => 'header_footer',
+		'section'  => 'footer_text_section',
 		'settings' => 'footer_header_size_setting',
 		'type'     => 'select',
 		'choices'  => array(
@@ -439,7 +622,7 @@ function footer_theme_customizer( $wp_customizer ) {
 
 	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'footer_p_size_control', array(
 		'label'    => 'Paragraph Size',
-		'section'  => 'header_footer',
+		'section'  => 'footer_text_section',
 		'settings' => 'footer_p_size_setting',
 		'type'     => 'select',
 		'choices'  => array(
@@ -466,18 +649,18 @@ function footer_theme_customizer( $wp_customizer ) {
 
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'footer_p_color_control', array(
 		'label'    => 'Paragraph Color',
-		'section'  => 'header_footer',
+		'section'  => 'footer_color_section',
 		'settings' => 'footer_p_color_setting',
 	) ) );
 
-	// footer p color
+	// footer archer color
 	$wp_customizer->add_setting( 'footer_a_color_setting', array(
 		'default' => '#d1d5db',
 	) );
 
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'footer_a_color_control', array(
 		'label'    => 'Archer Color',
-		'section'  => 'header_footer',
+		'section'  => 'footer_color_section',
 		'settings' => 'footer_a_color_setting',
 	) ) );
 
@@ -488,9 +671,15 @@ function footer_theme_customizer( $wp_customizer ) {
 
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'footer_bullet_control', array(
 		'label'    => 'Bullet Color',
-		'section'  => 'header_footer',
+		'section'  => 'footer_color_section',
 		'settings' => 'footer_bullet_setting',
 	) ) );
+
+	$wp_customizer->add_section( 'footer_content_section', array(
+		'title'       => __( 'Content', 'lorem' ),
+		'description' => __( 'Customize footer text', 'lorem' ),
+		'panel'       => 'footer_customizer_panel',
+	) );
 
 	// footer head
 	$wp_customizer->add_setting( 'footer_head_setting', array(
@@ -500,7 +689,7 @@ function footer_theme_customizer( $wp_customizer ) {
 
 	$wp_customizer->add_control( 'footer_head_control', array(
 		'label'    => __( 'Footer Head', 'luckygame78' ),
-		'section'  => 'header_footer',
+		'section'  => 'footer_content_section',
 		'settings' => 'footer_head_setting',
 		'type'     => 'text',
 	) );
@@ -513,7 +702,7 @@ function footer_theme_customizer( $wp_customizer ) {
 
 	$wp_customizer->add_control( 'footer_content_control', array(
 		'label'    => __( 'Footer Content', 'luckygame78' ),
-		'section'  => 'header_footer',
+		'section'  => 'footer_content_section',
 		'settings' => 'footer_content_setting',
 		'type'     => 'textarea',
 	) );
@@ -526,7 +715,7 @@ function footer_theme_customizer( $wp_customizer ) {
 
 	$wp_customizer->add_control( 'copyright_text_control', array(
 		'label'    => __( 'Copyright', 'lorem' ),
-		'section'  => 'header_footer',
+		'section'  => 'footer_content_section',
 		'settings' => 'copyright_text_setting',
 		'type'     => 'textarea',
 	) );
@@ -691,14 +880,19 @@ function widget_theme_customizer( $wp_customizer ) {
 }
 
 function sticky_widget_theme_customizer( $wp_customizer ) {
-	// sticky widget
-	$wp_customizer->add_section( 'sticky_widget_customizer', array(
-		'title'       => __( 'Sticky Widget Settings', 'lorem' ),
+	$wp_customizer->add_panel( 'sticky_widget_panel', array(
+		'title'       => __( 'Sticky Widget Settings Panel', 'lorem' ),
 		'description' => __( 'Sticky widget customizer', 'lorem' ),
 		'priority'    => 105,
 	) );
 
 	for ( $i = 1; $i <= 4; $i ++ ) {
+		$wp_customizer->add_section( "sticky_widget_{$i}_section", array(
+			'title'       => __( "Sticky Widget {$i}", 'lorem' ),
+			'description' => __( 'Sticky widget customizer', 'lorem' ),
+			'panel'       => 'sticky_widget_panel',
+		) );
+
 		// sticky widget position horizontal
 		$wp_customizer->add_setting( "sticky_widget_{$i}_position_horizontal_setting", array(
 			'default' => 'right',
@@ -706,8 +900,8 @@ function sticky_widget_theme_customizer( $wp_customizer ) {
 
 		$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer,
 			"sticky_widget_{$i}_position_horizontal_control", array(
-				'label'    => "Sticky Widget {$i} Horizontal",
-				'section'  => 'sticky_widget_customizer',
+				'label'    => 'Horizontal Alignment',
+				'section'  => "sticky_widget_{$i}_section",
 				'settings' => "sticky_widget_{$i}_position_horizontal_setting",
 				'type'     => 'radio',
 				'choices'  => array(
@@ -723,8 +917,8 @@ function sticky_widget_theme_customizer( $wp_customizer ) {
 
 		$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer,
 			"sticky_widget_{$i}_position_vertical_control", array(
-				'label'    => "Sticky Widget {$i} Vertical",
-				'section'  => 'sticky_widget_customizer',
+				'label'    => 'Vertical Alignment',
+				'section'  => "sticky_widget_{$i}_section",
 				'settings' => "sticky_widget_{$i}_position_vertical_setting",
 				'type'     => 'radio',
 				'choices'  => array(
@@ -740,8 +934,8 @@ function sticky_widget_theme_customizer( $wp_customizer ) {
 
 		$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, "sticky_widget_{$i}_hide_pc_control",
 			array(
-				'label'    => "Sticky Widget {$i} Hide On PC",
-				'section'  => 'sticky_widget_customizer',
+				'label'    => 'Hide On PC',
+				'section'  => "sticky_widget_{$i}_section",
 				'settings' => "sticky_widget_{$i}_hide_pc_setting",
 				'type'     => 'checkbox',
 			) ) );
@@ -753,8 +947,8 @@ function sticky_widget_theme_customizer( $wp_customizer ) {
 
 		$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, "sticky_widget_{$i}_hide_mobile_control",
 			array(
-				'label'    => "Sticky Widget {$i} Hide On Mobile",
-				'section'  => 'sticky_widget_customizer',
+				'label'    => 'Hide On Mobile',
+				'section'  => "sticky_widget_{$i}_section",
 				'settings' => "sticky_widget_{$i}_hide_mobile_setting",
 				'type'     => 'checkbox',
 			) ) );
@@ -847,6 +1041,8 @@ function lorem_css_customizer() {
 	}
 	$css .= '}';
 
+	$css .= 'input{color:#000000;}';
+
 	$css .= '.prose{';
 	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
 		$color = get_theme_mod( 'font_color_setting' );
@@ -884,6 +1080,18 @@ function lorem_css_customizer() {
 		$css   .= "background-color:{$color};";
 	}
 	$css .= '}';
+
+//	$register_menu_button = get_theme_mod( 'header_register_is_button_setting', false );
+//	if ( $register_menu_button ) {
+//		$css .= '.register-menu a{';
+//
+//		$border = get_theme_mod( 'header_register_button_border_size_setting' );
+//		$color  = get_theme_mod( 'header_register_button_border_color_setting' );
+//		$css    .= "border:solid {$border} {$color};";
+//
+//
+//		$css .= '}';
+//	}
 
 	$css .= '.main-content p,.main-content li{';
 	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
@@ -1045,6 +1253,79 @@ function sticky_widget_style( $horizontal, $vertical, $hide_mobile = false, $hid
 	}
 
 	return $rtn;
+}
+
+function footer_widget_style() {
+	$column   = get_theme_mod( 'footer_column_setting' );
+	$column_1 = 'md:w-1/2';
+	$column_2 = 'md:w-1/2';
+	$column_3 = 'md:w-1/3';
+
+	if ( $column == 2 ) {
+		$layout = get_theme_mod( 'footer_2_columns_layout_setting' );
+		switch ( $layout ) {
+			case '1|1':
+				$column_1 = 'md:w-1/2';
+				$column_2 = 'md:w-1/2';
+				break;
+			case '1|2':
+				$column_1 = 'md:w-1/3';
+				$column_2 = 'md:w-2/3';
+				break;
+			case '2|1':
+				$column_1 = 'md:w-2/3';
+				$column_2 = 'md:w-1/3';
+				break;
+		}
+	} else if ( $column == 3 ) {
+		$layout = get_theme_mod( 'footer_3_columns_layout_setting' );
+		switch ( $layout ) {
+			case '1|1|1':
+				$column_1 = 'md:w-1/3';
+				$column_2 = 'md:w-1/3';
+				$column_3 = 'md:w-1/3';
+				break;
+			case '1|1|2':
+				$column_1 = 'md:w-1/4';
+				$column_2 = 'md:w-1/4';
+				$column_3 = 'md:w-2/4';
+				break;
+			case '1|2|1':
+				$column_1 = 'md:w-1/4';
+				$column_2 = 'md:w-2/4';
+				$column_3 = 'md:w-1/4';
+				break;
+			case '2|1|1':
+				$column_1 = 'md:w-2/4';
+				$column_2 = 'md:w-1/4';
+				$column_3 = 'md:w-1/4';
+				break;
+		}
+	}
+
+	return array( $column, $column_1, $column_2, $column_3 );
+}
+
+function header_background() {
+	$base     = get_theme_mod( 'header_color_setting' );
+	$gradient = get_theme_mod( 'header_color_gradient_to_setting' );
+
+	if ( ! empty( $gradient ) || $base != $gradient ) {
+		return "background-image:linear-gradient({$base},{$gradient});";
+	}
+
+	return "background-color:{$base};";
+}
+
+function footer_background() {
+	$base     = get_theme_mod( 'footer_color_setting' );
+	$gradient = get_theme_mod( 'footer_color_gradient_to_setting' );
+
+	if ( ! empty( $gradient ) || $base != $gradient ) {
+		return "background-image:linear-gradient({$base},{$gradient});";
+	}
+
+	return "background-color:{$base};";
 }
 
 // add action

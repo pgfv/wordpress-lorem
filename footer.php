@@ -1,54 +1,23 @@
 </main>
 <footer class="footer-content mt-5 pt-5 pb-20 md:pb-5"
-        style="background-color:<?php echo get_theme_mod( 'footer_color_setting' ) ?>;">
+        style="<?php echo footer_background(); ?>">
     <section class="flex flex-col md:flex-row md:space-x-10 mb-5 main-container">
-		<?php
-		$column   = get_theme_mod( 'footer_column_setting' );
-		$column_1 = 'md:w-1/2';
-		$column_2 = 'md:w-1/2';
-		$column_3 = 'md:w-1/3';
+		<?php $widget_style = footer_widget_style(); ?>
 
-		if ( $column == 3 ) {
-			// check layout
-			$layout = get_theme_mod( 'footer_3_columns_layout_setting' );
-			switch ( $layout ) {
-				case '1|1|1':
-					$column_1 = 'md:w-1/3';
-					$column_2 = 'md:w-1/3';
-					$column_3 = 'md:w-1/3';
-				case '1|1|2':
-					$column_1 = 'md:w-1/4';
-					$column_2 = 'md:w-1/4';
-					$column_3 = 'md:w-2/4';
-					break;
-				case '1|2|1':
-					$column_1 = 'md:w-1/4';
-					$column_2 = 'md:w-2/4';
-					$column_3 = 'md:w-1/4';
-					break;
-				case '2|1|1':
-					$column_1 = 'md:w-2/4';
-					$column_2 = 'md:w-1/4';
-					$column_3 = 'md:w-1/4';
-					break;
-			}
-		}
-		?>
-
-        <div class="<?php echo $column_1; ?>">
+        <div class="<?php echo $widget_style[1]; ?>">
 			<?php dynamic_sidebar( 'footer' ); ?>
         </div>
-        <div class="<?php echo $column_2; ?>">
+        <div class="<?php echo $widget_style[2]; ?>">
 			<?php dynamic_sidebar( 'footer_2' ); ?>
         </div>
 
-		<?php if ( $column >= 3 ) : ?>
-            <div class="<?php echo $column_3; ?>">
+		<?php if ( $widget_style[0] >= 3 ) : ?>
+            <div class="<?php echo $widget_style[3]; ?>">
 				<?php dynamic_sidebar( 'footer_3' ); ?>
             </div>
 		<?php endif; ?>
 
-		<?php if ( $column == 4 ) : ?>
+		<?php if ( $widget_style[0] == 4 ) : ?>
             <div class="md:w-1/4">
 				<?php dynamic_sidebar( 'footer_4' ); ?>
             </div>

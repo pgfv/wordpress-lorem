@@ -42,8 +42,8 @@
 <section class="flex flex-col min-h-screen"
          style="background-color:<?php echo get_theme_mod( 'background_color_setting' ); ?>;">
 
-    <header class="flex flex-col md:mb-10"
-            style="background-color:<?php echo get_theme_mod( 'header_color_setting' ); ?>;">
+    <header class="flex flex-col"
+            style="<?php echo header_background() ?>">
 
         <section class="flex flex-col md:flex-row justify-between main-container">
             <section class="py-3 flex flex-row justify-between items-center">
@@ -81,18 +81,20 @@
             </section>
 
 			<?php $sticky_register = get_theme_mod( 'header_sticky_register_setting' ); ?>
-            <section class="pb-3 md:py-5 md:flex items-center<?php if ( $sticky_register ): ?> hidden<?php endif; ?>">
+            <section
+                    class="register-menu pb-3 md:py-5 md:flex items-center<?php if ( $sticky_register ): ?> hidden<?php endif; ?>">
 				<?php $register_menu = register_menu(); ?>
                 <nav class="flex flex-row justify-evenly w-full md:space-x-5">
 					<?php echo $register_menu[0] ?>
                 </nav>
             </section>
         </section>
-        <section id="nav-menu" class="header-menu "
-                 style="background-color:<?php echo get_theme_mod( 'header_menu_color_setting' ) ?>;">
-			<?php echo header_menu_list(); ?>
-        </section>
     </header>
+
+    <section id="nav-menu" class="header-menu hidden md:block py-5 md:py-0"
+             style="background-color:<?php echo get_theme_mod( 'header_menu_color_setting' ) ?>;">
+		<?php echo header_menu_list(); ?>
+    </section>
 
 	<?php if ( $sticky_register ): ?>
         <section class="block md:hidden sticky top-0 mb-5">
@@ -103,4 +105,4 @@
         </section>
 	<?php endif; ?>
 
-    <main role="main" class="flex-1 main-container">
+    <main role="main" class="flex-1 main-container mt-5">
