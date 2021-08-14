@@ -15,6 +15,23 @@
     <style type="text/css">
         <?php echo lorem_css_customizer(); ?>
     </style>
+
+	<?php
+	if ( ! empty( get_theme_mod( 'google_analytics_setting' ) ) ) :
+		$id = get_theme_mod( 'google_analytics_setting' ); ?>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $id; ?>"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+
+            gtag('js', new Date());
+            gtag('config', '<?php echo $id; ?>');
+        </script>
+	<?php endif; ?>
 </head>
 <body <?php body_class(); ?>>
 

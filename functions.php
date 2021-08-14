@@ -955,6 +955,23 @@ function sticky_widget_theme_customizer( $wp_customizer ) {
 	}
 }
 
+function google_analytic_customizer( $wp_customizer ) {
+	$wp_customizer->add_section( 'google_analytics_section', array(
+		'title'       => __( 'Google Analytics Setting', 'lorem' ),
+		'description' => __( 'Google analytics', 'lorem' ),
+		'priority'    => 120,
+	) );
+
+	$wp_customizer->add_setting( 'google_analytics_setting', array() );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'google_analytics_control', array(
+		'label'    => 'Measurement ID',
+		'section'  => 'google_analytics_section',
+		'settings' => 'google_analytics_setting',
+		'type'     => 'text',
+	) ) );
+}
+
 function lorem_widgets_init() {
 	register_sidebar( array(
 		'id'            => 'primary',
@@ -1310,7 +1327,7 @@ function header_background() {
 	$base     = get_theme_mod( 'header_color_setting' );
 	$gradient = get_theme_mod( 'header_color_gradient_to_setting' );
 
-	if ( ! empty( $gradient ) || $base != $gradient ) {
+	if ( ! empty( $gradient ) && $base != $gradient ) {
 		return "background-image:linear-gradient({$base},{$gradient});";
 	}
 
@@ -1341,6 +1358,7 @@ add_action( 'customize_register', 'footer_theme_customizer' );
 add_action( 'customize_register', 'colors_theme_customizer' );
 add_action( 'customize_register', 'widget_theme_customizer' );
 add_action( 'customize_register', 'sticky_widget_theme_customizer' );
+add_action( 'customize_register', 'google_analytic_customizer' );
 
 // add filter
 add_filter( 'image_size_names_choose', 'image_sizes_name' );
