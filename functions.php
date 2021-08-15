@@ -361,108 +361,108 @@ function header_theme_customizer( $wp_customizer ) {
 		'type'     => 'checkbox',
 	) ) );
 
-	// register button
-	$wp_customizer->add_setting( 'header_register_is_button_setting', array(
-		'default' => false,
-	) );
-
-	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_is_button_control', array(
-		'label'    => 'Display as button',
-		'section'  => 'header_register_section',
-		'settings' => 'header_register_is_button_setting',
-		'type'     => 'checkbox',
-	) ) );
-
-	// register button border size
-	$wp_customizer->add_setting( 'header_register_button_border_size_setting', array(
-		'default' => '1px'
-	) );
-
-	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_border_size_control',
-		array(
-			'label'    => 'Button border size',
-			'section'  => 'header_register_section',
-			'settings' => 'header_register_button_border_size_setting',
-			'type'     => 'text',
-		) ) );
-
-	// register button border color
-	$wp_customizer->add_setting( 'header_register_button_border_color_setting', array(
-		'default' => '#000000',
-	) );
-
-	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
-		'header_register_button_border_color_control',
-		array(
-			'label'    => 'Border Color',
-			'section'  => 'header_register_section',
-			'settings' => 'header_register_button_border_color_setting',
-		) ) );
-
-	// register button background
-	$wp_customizer->add_setting( 'header_register_button_background_setting', array(
-		'default' => '#9CA3AF',
-	) );
-
-	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
-		'header_register_button_background_control',
-		array(
-			'label'    => 'Background Color',
-			'section'  => 'header_register_section',
-			'settings' => 'header_register_button_background_setting',
-		) ) );
-
-	// register button background hover
-	$wp_customizer->add_setting( 'header_register_button_background_hover_setting', array(
-		'default' => '#9CA3AF',
-	) );
-
-	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
-		'header_register_button_background_hover_control',
-		array(
-			'label'    => 'Hover Background Color',
-			'section'  => 'header_register_section',
-			'settings' => 'header_register_button_background_hover_setting',
-		) ) );
-
-	// register button padding x, y
-	$wp_customizer->add_setting( 'header_register_button_padding_x_setting', array(
-		'default' => '10px',
-	) );
-
-	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_padding_x_control',
-		array(
-			'label'    => 'Button Padding Horizon',
-			'section'  => 'header_register_section',
-			'settings' => 'header_register_button_padding_x_setting',
-			'type'     => 'text',
-		) ) );
-
-	$wp_customizer->add_setting( 'header_register_button_padding_y_setting', array(
-		'default' => '10px',
-	) );
-
-	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_padding_y_control',
-		array(
-			'label'    => 'Button Padding Vertical',
-			'section'  => 'header_register_section',
-			'settings' => 'header_register_button_padding_y_setting',
-			'type'     => 'text',
-		) ) );
-
-	// register button text size
-	$wp_customizer->add_setting( 'header_register_button_text_size_setting', array(
-		'default' => '1rem|1.5rem',
-	) );
-
-	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_text_size_control',
-		array(
-			'label'    => 'Button Font Size',
-			'section'  => 'header_register_section',
-			'settings' => 'header_register_button_text_size_setting',
-			'type'     => 'select',
-			'choices'  => THEME_FONT_SIZE,
-		) ) );
+//	// register button
+//	$wp_customizer->add_setting( 'header_register_is_button_setting', array(
+//		'default' => false,
+//	) );
+//
+//	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_is_button_control', array(
+//		'label'    => 'Display as button',
+//		'section'  => 'header_register_section',
+//		'settings' => 'header_register_is_button_setting',
+//		'type'     => 'checkbox',
+//	) ) );
+//
+//	// register button border size
+//	$wp_customizer->add_setting( 'header_register_button_border_size_setting', array(
+//		'default' => '1px'
+//	) );
+//
+//	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_border_size_control',
+//		array(
+//			'label'    => 'Button border size',
+//			'section'  => 'header_register_section',
+//			'settings' => 'header_register_button_border_size_setting',
+//			'type'     => 'text',
+//		) ) );
+//
+//	// register button border color
+//	$wp_customizer->add_setting( 'header_register_button_border_color_setting', array(
+//		'default' => '#000000',
+//	) );
+//
+//	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
+//		'header_register_button_border_color_control',
+//		array(
+//			'label'    => 'Border Color',
+//			'section'  => 'header_register_section',
+//			'settings' => 'header_register_button_border_color_setting',
+//		) ) );
+//
+//	// register button background
+//	$wp_customizer->add_setting( 'header_register_button_background_setting', array(
+//		'default' => '#9CA3AF',
+//	) );
+//
+//	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
+//		'header_register_button_background_control',
+//		array(
+//			'label'    => 'Background Color',
+//			'section'  => 'header_register_section',
+//			'settings' => 'header_register_button_background_setting',
+//		) ) );
+//
+//	// register button background hover
+//	$wp_customizer->add_setting( 'header_register_button_background_hover_setting', array(
+//		'default' => '#9CA3AF',
+//	) );
+//
+//	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
+//		'header_register_button_background_hover_control',
+//		array(
+//			'label'    => 'Hover Background Color',
+//			'section'  => 'header_register_section',
+//			'settings' => 'header_register_button_background_hover_setting',
+//		) ) );
+//
+//	// register button padding x, y
+//	$wp_customizer->add_setting( 'header_register_button_padding_x_setting', array(
+//		'default' => '10px',
+//	) );
+//
+//	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_padding_x_control',
+//		array(
+//			'label'    => 'Button Padding Horizon',
+//			'section'  => 'header_register_section',
+//			'settings' => 'header_register_button_padding_x_setting',
+//			'type'     => 'text',
+//		) ) );
+//
+//	$wp_customizer->add_setting( 'header_register_button_padding_y_setting', array(
+//		'default' => '10px',
+//	) );
+//
+//	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_padding_y_control',
+//		array(
+//			'label'    => 'Button Padding Vertical',
+//			'section'  => 'header_register_section',
+//			'settings' => 'header_register_button_padding_y_setting',
+//			'type'     => 'text',
+//		) ) );
+//
+//	// register button text size
+//	$wp_customizer->add_setting( 'header_register_button_text_size_setting', array(
+//		'default' => '1rem|1.5rem',
+//	) );
+//
+//	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_text_size_control',
+//		array(
+//			'label'    => 'Button Font Size',
+//			'section'  => 'header_register_section',
+//			'settings' => 'header_register_button_text_size_setting',
+//			'type'     => 'select',
+//			'choices'  => THEME_FONT_SIZE,
+//		) ) );
 }
 
 function footer_theme_customizer( $wp_customizer ) {
