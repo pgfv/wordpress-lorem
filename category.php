@@ -1,6 +1,12 @@
 <?php get_header(); ?>
 <section class="content-container" role="main">
     <section class="main-content">
+		<?php if ( function_exists( 'aioseo_breadcrumbs' ) ) : ?>
+            <section class="mb-10">
+				<?php aioseo_breadcrumbs(); ?>
+            </section>
+		<?php endif; ?>
+        
         <h1>Category: <?php single_cat_title( '', false ); ?></h1>
 		<?php if ( have_posts() ): ?>
             <ul>
