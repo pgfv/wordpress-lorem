@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-<section class="content-container">
+<section class="content-container" role="main">
     <section class="main-content">
 		<?php the_content(); ?>
 		<?php edit_post_link(); ?>

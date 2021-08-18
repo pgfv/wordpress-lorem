@@ -48,5 +48,5 @@
 }
 
 .main-aside {
-    @apply md:w-1/4 mt-10 md:mt-0 md:pl-5;
+    @apply mt-10 md:w-1/4 md:mt-0 md:pl-5;
 }
