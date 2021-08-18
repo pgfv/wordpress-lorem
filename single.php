@@ -1,6 +1,6 @@
 <?php get_header(); ?>
-<section class="main-content flex flex-col md:flex-row md:divide-x md:divide-gray-300">
-    <section class="md:w-3/4 prose max-w-none md:pr-5">
+<section class="content-container" role="main">
+    <section class="main-content">
 		<?php if ( function_exists( 'aioseo_breadcrumbs' ) ) : ?>
             <section class="mb-10">
 				<?php aioseo_breadcrumbs(); ?>
@@ -10,7 +10,7 @@
 		<?php the_content(); ?>
 		<?php edit_post_link(); ?>
     </section>
-    <aside class="md:w-1/4 mt-10 md:mt-0 md:pl-5">
+    <aside class="main-aside">
 		<?php dynamic_sidebar( 'primary' ); ?>
     </aside>
 </section>

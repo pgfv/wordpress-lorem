@@ -1,5 +1,10 @@
 <?php get_header(); ?>
-<section class="main-content">
-    <p>ไม่พบหน้าที่ค้นหา</p>
+<section class="content-container" role="main">
+    <section class="main-content">
+        <p>not found</p>
+    </section>
+    <aside class="main-aside">
+		<?php dynamic_sidebar( 'primary' ); ?>
+    </aside>
 </section>
 <?php get_footer(); ?>
