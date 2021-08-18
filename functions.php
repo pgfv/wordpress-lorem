@@ -1392,6 +1392,7 @@ add_action( 'customize_register', 'colors_theme_customizer' );
 add_action( 'customize_register', 'widget_theme_customizer' );
 add_action( 'customize_register', 'sticky_widget_theme_customizer' );
 add_action( 'customize_register', 'google_analytic_customizer' );
+add_action( 'customize_register', 'breadcrumbs_customizer' );
 
 // add filter
 add_filter( 'image_size_names_choose', 'image_sizes_name' );
