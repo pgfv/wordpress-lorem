@@ -2,7 +2,7 @@
 $theme = wp_get_theme();
 define( 'THEME_VERSION', $theme->version );
 
-$font_sizes = array(
+$font_sizes        = array(
 	'0.75rem|1rem'     => 'xs',
 	'0.875rem|1.25rem' => 'sm',
 	'1rem|1.5rem'      => 'base',
@@ -17,7 +17,9 @@ $font_sizes = array(
 	'6rem|1'           => '8xl',
 	'8rem|1'           => '9xl',
 );
+$font_size_default = '1rem|1.5rem';
 define( 'THEME_FONT_SIZE', $font_sizes );
+define( 'THEME_FONT_SIZE_DEFAULT', $font_size_default );
 
 if ( function_exists( 'add_theme_support' ) ) {
 	add_theme_support( 'title-tag' );
@@ -171,7 +173,7 @@ function font_theme_customizer( $wp_customizer ) {
 
 	// font size
 	$wp_customizer->add_setting( 'font_size_setting', array(
-		'default' => '1rem|1.5rem',
+		'default' => THEME_FONT_SIZE_DEFAULT,
 	) );
 
 	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'font_size_control', array(
@@ -617,7 +619,7 @@ function footer_theme_customizer( $wp_customizer ) {
 
 	// footer p size
 	$wp_customizer->add_setting( 'footer_p_size_setting', array(
-		'default' => '1rem|1.5rem',
+		'default' => THEME_FONT_SIZE_DEFAULT,
 	) );
 
 	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'footer_p_size_control', array(
@@ -625,21 +627,7 @@ function footer_theme_customizer( $wp_customizer ) {
 		'section'  => 'footer_text_section',
 		'settings' => 'footer_p_size_setting',
 		'type'     => 'select',
-		'choices'  => array(
-			'0.75rem|1rem'     => 'xs',
-			'0.875rem|1.25rem' => 'sm',
-			'1rem|1.5rem'      => 'base',
-			'1.125rem|1.75rem' => 'lg',
-			'1.25rem|1.75rem'  => 'xl',
-			'1.5rem|2rem'      => '2xl',
-			'1.875rem|2.25rem' => '3xl',
-			'2.25rem|2.5rem'   => '4xl',
-			'3rem|1'           => '5xl',
-			'3.75rem|1'        => '6xl',
-			'4.5rem|1'         => '7xl',
-			'6rem|1'           => '8xl',
-			'8rem|1'           => '9xl',
-		),
+		'choices'  => THEME_FONT_SIZE,
 	) ) );
 
 	// footer p color
@@ -972,6 +960,40 @@ function google_analytic_customizer( $wp_customizer ) {
 	) ) );
 }
 
+function breadcrumbs_customizer( $wp_customizer ) {
+	$wp_customizer->add_section( 'breadcrumbs_section', array(
+		'title'       => __( 'Breadcrumbs Setting', 'lorem' ),
+		'description' => __( 'All In One Breadcrumbs', 'lorem' ),
+		'priority'    => 119,
+	) );
+
+	// font size
+	$wp_customizer->add_setting( 'breadcrumbs_font_size_setting', array(
+		'default' => THEME_FONT_SIZE_DEFAULT,
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'breadcrumbs_font_size_control', array(
+		'label'    => 'Font Size',
+		'section'  => 'breadcrumbs_section',
+		'settings' => 'breadcrumbs_font_size_setting',
+		'type'     => 'select',
+		'choices'  => THEME_FONT_SIZE,
+	) ) );
+
+	// font color
+	$wp_customizer->add_setting( 'breadcrumbs_text_color_setting', array(
+		'default' => '#000000',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
+		'breadcrumbs_text_color_control',
+		array(
+			'label'    => 'Text Color',
+			'section'  => 'breadcrumbs_section',
+			'settings' => 'breadcrumbs_text_color_setting',
+		) ) );
+}
+
 function lorem_widgets_init() {
 	register_sidebar( array(
 		'id'            => 'primary',
@@ -1234,6 +1256,17 @@ function lorem_css_customizer() {
 	}
 	if ( ! empty( get_theme_mod( 'tag_cloud_widget_text_color_setting' ) ) ) {
 		$color = get_theme_mod( 'tag_cloud_widget_text_color_setting' );
+		$css   .= "color:{$color};";
+	}
+	$css .= '}';
+
+	$css .= '.aioseo-breadcrumbs{';
+	if ( ! empty( get_theme_mod( 'breadcrumbs_font_size_setting' ) ) ) {
+		$size = explode( "|", get_theme_mod( 'breadcrumbs_font_size_setting' ) );
+		$css  .= "font-size:{$size[0]};";
+	}
+	if ( ! empty( get_theme_mod( 'breadcrumbs_text_color_setting' ) ) ) {
+		$color = get_theme_mod( 'breadcrumbs_text_color_setting' );
 		$css   .= "color:{$color};";
 	}
 	$css .= '}';

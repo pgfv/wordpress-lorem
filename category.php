@@ -6,8 +6,8 @@
 				<?php aioseo_breadcrumbs(); ?>
             </section>
 		<?php endif; ?>
-        
-        <h1>Category: <?php single_cat_title( '', false ); ?></h1>
+
+        <h1><?php single_cat_title( 'Category: ' ); ?></h1>
 		<?php if ( have_posts() ): ?>
             <ul>
 				<?php while ( have_posts() ): the_post(); ?>
