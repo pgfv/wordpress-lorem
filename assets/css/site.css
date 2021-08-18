@@ -47,6 +47,6 @@
     @apply md:w-3/4 prose max-w-none md:pr-5;
 }
 
-.content-aside {
+.main-aside {
     @apply md:w-1/4 mt-10 md:mt-0 md:pl-5;
 }
