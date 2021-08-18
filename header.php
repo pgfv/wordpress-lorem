@@ -114,7 +114,7 @@
     </section>
 
 	<?php if ( $sticky_register ): ?>
-        <section class="block md:hidden sticky top-0 mb-5">
+        <section class="block md:hidden sticky top-0 mb-5 z-10">
 			<?php $register_menu = register_menu(); ?>
             <nav class="flex flex-row justify-evenly w-full md:space-x-5">
 				<?php echo $register_menu[0] ?>
