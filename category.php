@@ -9,11 +9,16 @@
 
         <h1><?php single_cat_title( 'Category: ' ); ?></h1>
 		<?php if ( have_posts() ): ?>
-            <ul>
+            <section class="grid grid-cols-2 md:grid-cols-3 gap-5">
 				<?php while ( have_posts() ): the_post(); ?>
-                    <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+                    <article class="article-box">
+                        <a href="<?php the_permalink(); ?>">
+							<?php the_post_thumbnail(); ?>
+							<?php the_title(); ?>
+                        </a>
+                    </article>
 				<?php endwhile; ?>
-            </ul>
+            </section>
 		<?php else: ?>
             <p>Sorry, no posts matched your criteria.</p>
 		<?php endif; ?>
