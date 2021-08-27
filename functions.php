@@ -1110,13 +1110,6 @@ function lorem_css_customizer() {
 
 	$css .= 'input{color:#000000;}';
 
-	$css .= 'strong{';
-	if ( ! empty( get_theme_mod( 'strong_color_setting' ) ) ) {
-		$color = get_theme_mod( 'strong_color_setting' );
-		$css   .= "color:{$color}";
-	}
-	$css .= '}';
-
 	$css .= '.prose{';
 	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
 		$color = get_theme_mod( 'font_color_setting' );
@@ -1179,9 +1172,9 @@ function lorem_css_customizer() {
 	$css .= '}';
 
 	$css .= '.main-content strong{';
-	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
-		$color = get_theme_mod( 'font_color_setting' );
-		$css   .= "color:{$color};";
+	if ( ! empty( get_theme_mod( 'strong_color_setting' ) ) ) {
+		$color = get_theme_mod( 'strong_color_setting' );
+		$css   .= "color:{$color}";
 	}
 	$css .= '}';
 
