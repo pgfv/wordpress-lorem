@@ -222,6 +222,17 @@ function font_theme_customizer( $wp_customizer ) {
 		'type'     => 'select',
 		'choices'  => THEME_FONT_SIZE,
 	) ) );
+
+	// theme setting: strong
+	$wp_customizer->add_setting( 'strong_color_setting', array(
+		'default' => '',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'strong_color_control', array(
+		'label'    => 'Strong Color',
+		'section'  => 'theme_colors',
+		'settings' => 'strong_color_setting',
+	) ) );
 }
 
 function header_theme_customizer( $wp_customizer ) {
@@ -663,6 +674,23 @@ function footer_theme_customizer( $wp_customizer ) {
 		'settings' => 'footer_bullet_setting',
 	) ) );
 
+	$wp_customizer->add_section( 'footer_mobile_section', array(
+		'title'       => __( 'Mobile Menu', 'lorem' ),
+		'description' => __( 'Customize footer mobile menu', 'lorem' ),
+		'panel'       => 'footer_customizer_panel',
+	) );
+
+	// mobile archer color
+	$wp_customizer->add_setting( 'footer_mobile_a_color_setting', array(
+		'default' => '#d1d5db',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'footer_mobile_a_color_control', array(
+		'label'    => 'Archer Color',
+		'section'  => 'footer_mobile_section',
+		'settings' => 'footer_mobile_a_color_setting',
+	) ) );
+
 	$wp_customizer->add_section( 'footer_content_section', array(
 		'title'       => __( 'Content', 'lorem' ),
 		'description' => __( 'Customize footer text', 'lorem' ),
@@ -1082,6 +1110,13 @@ function lorem_css_customizer() {
 
 	$css .= 'input{color:#000000;}';
 
+	$css .= 'strong{';
+	if ( ! empty( get_theme_mod( 'strong_color_setting' ) ) ) {
+		$color = get_theme_mod( 'strong_color_setting' );
+		$css   .= "color:{$color}";
+	}
+	$css .= '}';
+
 	$css .= '.prose{';
 	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
 		$color = get_theme_mod( 'font_color_setting' );
@@ -1224,6 +1259,13 @@ function lorem_css_customizer() {
 	}
 	if ( ! empty( get_theme_mod( 'footer_a_color_setting' ) ) ) {
 		$color = get_theme_mod( 'footer_a_color_setting' );
+		$css   .= "color:{$color};";
+	}
+	$css .= '}';
+
+	$css .= '.mobile-menu a{';
+	if ( ! empty( get_theme_mod( 'footer_mobile_a_color_setting' ) ) ) {
+		$color = get_theme_mod( 'footer_mobile_a_color_setting' );
 		$css   .= "color:{$color};";
 	}
 	$css .= '}';
@@ -1378,6 +1420,17 @@ function footer_background() {
 	return "background-color:{$base};";
 }
 
+function set_tag_cloud_sizes( $args ) {
+	$args = array(
+		'smallest' => 12,
+		'default'  => 16,
+		'largest'  => 20,
+		'unit'     => 'px',
+	);
+
+	return $args;
+}
+
 // add action
 add_action( 'init', 'register_menus' );
 add_action( 'init', 'lorem_widgets_init' );
@@ -1398,3 +1451,4 @@ add_action( 'customize_register', 'breadcrumbs_customizer' );
 add_filter( 'image_size_names_choose', 'image_sizes_name' );
 add_filter( 'nav_menu_css_class', 'header_menu_li_classes', 1, 3 );
 add_filter( 'nav_menu_link_attributes', 'header_menu_archer_classes', 10, 3 );
+add_filter( 'widget_tag_cloud_args', 'set_tag_cloud_sizes' );
