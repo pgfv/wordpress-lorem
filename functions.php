@@ -1314,7 +1314,7 @@ function lorem_css_customizer() {
 	$css .= '}';
 
 	// reset tag cloud font size
-//	$css .= '.wp-block-tag-cloud a{font-size:100%;}';
+	$css .= '.wp-block-tag-cloud a{font-size:100%;}';
 
 	return $css;
 }
@@ -1423,15 +1423,6 @@ function footer_background() {
 	return "background-color:{$base};";
 }
 
-function custom_tag_cloud_font_sizes( $args ) {
-	$args['largest']  = 20;
-	$args['default']  = 16;
-	$args['smallest'] = 12;
-	$args['unit']     = 'px';
-
-	return $args;
-}
-
 // add action
 add_action( 'init', 'register_menus' );
 add_action( 'init', 'lorem_widgets_init' );
@@ -1452,4 +1443,3 @@ add_action( 'customize_register', 'breadcrumbs_customizer' );
 add_filter( 'image_size_names_choose', 'image_sizes_name' );
 add_filter( 'nav_menu_css_class', 'header_menu_li_classes', 1, 3 );
 add_filter( 'nav_menu_link_attributes', 'header_menu_archer_classes', 10, 3 );
-add_filter( 'widget_tag_cloud_args', 'custom_tag_cloud_font_sizes' );
