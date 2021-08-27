@@ -686,7 +686,7 @@ function footer_theme_customizer( $wp_customizer ) {
 	) );
 
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'footer_mobile_a_color_control', array(
-		'label'    => 'Archer Color',
+		'label'    => 'Anchor Color',
 		'section'  => 'footer_mobile_section',
 		'settings' => 'footer_mobile_a_color_setting',
 	) ) );
@@ -1313,6 +1313,9 @@ function lorem_css_customizer() {
 	}
 	$css .= '}';
 
+	// reset tag cloud font size
+//	$css .= '.wp-block-tag-cloud a{font-size:100%;}';
+
 	return $css;
 }
 
@@ -1420,13 +1423,11 @@ function footer_background() {
 	return "background-color:{$base};";
 }
 
-function set_tag_cloud_sizes( $args ) {
-	$args = array(
-		'smallest' => 12,
-		'default'  => 16,
-		'largest'  => 20,
-		'unit'     => 'px',
-	);
+function custom_tag_cloud_font_sizes( $args ) {
+	$args['largest']  = 20;
+	$args['default']  = 16;
+	$args['smallest'] = 12;
+	$args['unit']     = 'px';
 
 	return $args;
 }
@@ -1451,4 +1452,4 @@ add_action( 'customize_register', 'breadcrumbs_customizer' );
 add_filter( 'image_size_names_choose', 'image_sizes_name' );
 add_filter( 'nav_menu_css_class', 'header_menu_li_classes', 1, 3 );
 add_filter( 'nav_menu_link_attributes', 'header_menu_archer_classes', 10, 3 );
-add_filter( 'widget_tag_cloud_args', 'set_tag_cloud_sizes' );
+add_filter( 'widget_tag_cloud_args', 'custom_tag_cloud_font_sizes' );
