@@ -1314,7 +1314,7 @@ function lorem_css_customizer() {
 	$css .= '}';
 
 	// reset tag cloud font size
-	$css .= '.wp-block-tag-cloud a{font-size:100%;}';
+	$css .= '.wp-block-tag-cloud{display:flex;flex-wrap:wrap;}.wp-block-tag-cloud a{font-size:100% !important;margin:0 5px 5px 0;}';
 
 	return $css;
 }
