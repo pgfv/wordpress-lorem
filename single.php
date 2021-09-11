@@ -9,7 +9,7 @@
 
 		<?php the_content(); ?>
 
-        <nav class="flex flex-row justify-between">
+        <nav class="flex flex-row justify-between mt-5">
             <div><?php previous_post_link( '&laquo; %link' ); ?></div>
             <div><?php next_post_link( '%link &raquo;' ); ?></div>
         </nav>
