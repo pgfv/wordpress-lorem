@@ -9,9 +9,9 @@
 
 		<?php the_content(); ?>
 
-        <nav class="flex flex-col justify-between">
-            <div><?php previous_post_link( '&laquo; %', '', 'yes' ); ?></div>
-            <div><?php next_post_link( '% &raquo;', '', 'yes' ); ?></div>
+        <nav class="flex flex-row justify-between">
+            <div><?php previous_post_link( '&laquo; %link' ); ?></div>
+            <div><?php next_post_link( '%link &raquo;' ); ?></div>
         </nav>
 		<?php edit_post_link(); ?>
     </section>
