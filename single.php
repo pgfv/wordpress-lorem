@@ -8,6 +8,11 @@
 		<?php endif; ?>
 
 		<?php the_content(); ?>
+
+        <nav class="flex flex-col justify-between">
+            <div><?php previous_post_link( '&laquo; %', '', 'yes' ); ?></div>
+            <div><?php next_post_link( '% &raquo;', '', 'yes' ); ?></div>
+        </nav>
 		<?php edit_post_link(); ?>
     </section>
     <aside class="main-aside">
