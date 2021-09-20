@@ -50,3 +50,8 @@
 .main-aside {
     @apply mt-10 md:w-1/4 md:mt-0 md:pl-5;
 }
+
+.wp-block-latest-posts__featured-image img {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
