@@ -9,6 +9,11 @@
 
 		<?php the_content(); ?>
 
+        <address class="flex flex-row space-x-3 mt-5">
+            <div>Author: <?php the_author_meta( 'display_name', 1 ); ?></div>
+            <div>Date: <?php echo get_the_date(); ?></div>
+        </address>
+
         <nav class="flex flex-row justify-between mt-5">
             <div><?php previous_post_link( '&laquo; %link' ); ?></div>
             <div><?php next_post_link( '%link &raquo;' ); ?></div>

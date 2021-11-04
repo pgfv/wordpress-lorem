@@ -1,7 +1,10 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
+const defaultTheme = require( 'tailwindcss/defaultTheme' );
 
 module.exports = {
-    purge: ['./**/*.php'],
+    purge: [
+        './**/*.php',
+        './plugins/lorem-image/src/*.js',
+    ],
     darkMode: false, // or 'media' or 'class'
     theme: {
         // fontFamily: {
@@ -30,7 +33,7 @@ module.exports = {
         extend: {},
     },
     plugins: [
-        require('@tailwindcss/typography'),
-        require('@tailwindcss/aspect-ratio'),
+        require( '@tailwindcss/typography' ),
+        require( '@tailwindcss/aspect-ratio' ),
     ],
 }

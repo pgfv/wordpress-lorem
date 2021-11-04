@@ -59,6 +59,14 @@ function dequeue_plugin_style() {
 	wp_dequeue_style( 'menu-icons-extra' );
 }
 
+function make_image_relative_path( $html, $id, $caption, $title, $align, $url, $size, $alt ) {
+	$image_url    = wp_get_attachment_image_src( $id, $size );
+	$relative_url = wp_make_link_relative( $image_url[0] );
+	$html         = str_replace( $image_url[0], $relative_url, $html );
+
+	return $html;
+}
+
 function header_menu() {
 	$html = wp_nav_menu( array(
 		'theme_location' => 'header-menu',
@@ -98,8 +106,13 @@ function header_menu_li_classes( $classes, $item, $args ) {
 }
 
 function header_menu_archer_classes( $atts, $item, $args ) {
+	$class = implode( ' ', $item->classes );
 	if ( $args->theme_location == 'header-menu' ) {
-		$atts['class'] = 'block md:py-3 md:px-5';
+		$atts['class'] = "block md:py-3 md:px-5 {$class}";
+	}
+
+	if ( $args->theme_location == 'register-menu' ) {
+		$atts['class'] = $class;
 	}
 
 	return $atts;
@@ -687,8 +700,19 @@ function footer_theme_customizer( $wp_customizer ) {
 
 	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'footer_mobile_a_color_control', array(
 		'label'    => 'Anchor Color',
-		'section'  => 'footer_mobile_section',
+		'section'  => 'footer_color_section',
 		'settings' => 'footer_mobile_a_color_setting',
+	) ) );
+
+	// copyright text color
+	$wp_customizer->add_setting( 'copyright_text_color_setting', array(
+		'default' => '#d1d5db',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'copyright_text_color_control', array(
+		'label'    => 'Copyright Color',
+		'section'  => 'footer_color_section',
+		'settings' => 'copyright_text_color_setting',
 	) ) );
 
 	$wp_customizer->add_section( 'footer_content_section', array(
@@ -734,6 +758,26 @@ function footer_theme_customizer( $wp_customizer ) {
 		'section'  => 'footer_content_section',
 		'settings' => 'copyright_text_setting',
 		'type'     => 'textarea',
+	) );
+
+	// mobile menu
+	$wp_customizer->add_section( 'footer_mobile_menu_section', array(
+		'title'       => __( 'Mobile Menu', 'lorem' ),
+		'description' => __( 'Customize Mobile Menu', 'lorem' ),
+		'panel'       => 'footer_customizer_panel',
+	) );
+
+	$wp_customizer->add_setting( 'footer_mobile_menu_enable_setting', array(
+		'type'       => 'theme_mod',
+		'capability' => 'edit_theme_options',
+		'default'    => true,
+	) );
+
+	$wp_customizer->add_control( 'footer_mobile_menu_enable_control', array(
+		'label'    => __( 'Enable Mobile Menu', 'lorem' ),
+		'section'  => 'footer_mobile_menu_section',
+		'settings' => 'footer_mobile_menu_enable_setting',
+		'type'     => 'checkbox',
 	) );
 }
 
@@ -1087,6 +1131,47 @@ function lorem_widgets_init() {
 	) );
 }
 
+function css_theme_mod_generator( $class, $settings = array(), $manuals = array() ) {
+	$css = '';
+	foreach ( $settings as $attr => $mod ) {
+		$value = get_theme_mod( $mod );
+		if ( empty( $value ) ) {
+			continue;
+		}
+
+		// check important flag
+		$flag = false;
+		if ( strpos( $attr, '!' ) !== false ) {
+			$flag = true;
+
+			// remove ! flag from string
+			$attr = str_replace( '!', '', $attr );
+		}
+
+		// check explode flag
+		if ( strpos( $attr, '|' ) !== false ) {
+			$exp   = explode( '|', $attr );
+			$value = explode( '|', $value )[ $exp[1] ];
+
+			// remove explode flag
+			$attr = str_replace( array( '|', $exp[1] ), '', $attr );
+		}
+
+		$css .= "{$attr}:{$value}";
+		if ( $flag ) {
+			$css .= ' !important';
+		}
+		$css .= ';';
+	}
+
+	// manual attributes
+	foreach ( $manuals as $attr => $value ) {
+		$css .= "{$attr}:{$value};";
+	}
+
+	return "{$class}{{$css}}";
+}
+
 function lorem_css_customizer() {
 	$css = 'html{';
 
@@ -1101,35 +1186,15 @@ function lorem_css_customizer() {
 
 	$css .= '}';
 
-	$css .= 'a{';
-	if ( ! empty( get_theme_mod( 'archer_color_setting' ) ) ) {
-		$color = get_theme_mod( 'archer_color_setting' );
-		$css   .= "color:{$color};";
-	}
-	$css .= '}';
+	// global
+	$css .= css_theme_mod_generator( 'a', array( 'color' => 'archer_color_setting' ) );
+	$css .= css_theme_mod_generator( 'input', array(), array( 'color' => '#000000' ) );
+	$css .= css_theme_mod_generator( '.prose', array( 'color' => 'font_color_setting' ) );
 
-	$css .= 'input{color:#000000;}';
-
-	$css .= '.prose{';
-	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
-		$color = get_theme_mod( 'font_color_setting' );
-		$css   .= "color:{$color};";
-	}
-	$css .= '}';
-
-	$css .= '.header-menu a{';
-	if ( ! empty( get_theme_mod( 'header_menu_archer_text_color_setting' ) ) ) {
-		$color = get_theme_mod( 'header_menu_archer_text_color_setting' );
-		$css   .= "color:{$color};";
-	}
-	$css .= '}';
-
-	$css .= '.header-menu a:hover{';
-	if ( ! empty( get_theme_mod( 'header_menu_archer_text_color_hover_setting' ) ) ) {
-		$color = get_theme_mod( 'header_menu_archer_text_color_hover_setting' );
-		$css   .= "color:{$color};";
-	}
-	$css .= '}';
+	// header menu
+	$css .= css_theme_mod_generator( '.header-menu a', array( 'color' => 'header_menu_archer_text_color_setting' ) );
+	$css .= css_theme_mod_generator( '.header-menu a:hover', array( 'color' => 'header_menu_archer_text_color_hover_setting' ) );
+	$css .= css_theme_mod_generator( '.header-menu .menu-item-has-children .sub-menu', array( 'background-color' => 'header_menu_color_setting' ) );
 
 	$css .= '.header-menu .menu-item:hover{';
 
@@ -1138,16 +1203,9 @@ function lorem_css_customizer() {
 		$color = get_theme_mod( 'header_menu_archer_background_setting' );
 		$css   .= "background-color:{$color};";
 	}
-
 	$css .= '}';
 
-	$css .= '.header-menu .menu-item-has-children .sub-menu{';
-	if ( ! empty( get_theme_mod( 'header_menu_color_setting' ) ) ) {
-		$color = get_theme_mod( 'header_menu_color_setting' );
-		$css   .= "background-color:{$color};";
-	}
-	$css .= '}';
-
+	// register menu
 //	$register_menu_button = get_theme_mod( 'header_register_is_button_setting', false );
 //	if ( $register_menu_button ) {
 //		$css .= '.register-menu a{';
@@ -1160,151 +1218,65 @@ function lorem_css_customizer() {
 //		$css .= '}';
 //	}
 
-	$css .= '.main-content p,.main-content li{';
-	if ( ! empty( get_theme_mod( 'font_color_setting' ) ) ) {
-		$color = get_theme_mod( 'font_color_setting' );
-		$css   .= "color:{$color};";
-	}
-	if ( ! empty( get_theme_mod( 'font_size_setting' ) ) ) {
-		$size = explode( '|', get_theme_mod( 'font_size_setting' ) );
-		$css  .= "font-size:{$size[0]};line-height:{$size[1]};";
-	}
-	$css .= '}';
+	// main content
+	$css .= css_theme_mod_generator( '.main-content p,.main-content li,.main-content address', array(
+		'color'         => 'font_color_setting',
+		'font-size|0'   => 'font_size_setting',
+		'line-height|1' => 'font_size_setting',
+	) );
+	$css .= css_theme_mod_generator( '.main-content strong', array( 'color' => 'strong_color_setting' ) );
+	$css .= css_theme_mod_generator( '.main-content h1,.main-content h1 strong', array(
+		'color!'      => 'h1_color_setting',
+		'font-size|0' => 'h1_size_setting',
+	) );
+	$css .= css_theme_mod_generator( '.main-content h2,.main-content h2 strong', array(
+		'color!'      => 'h2_color_setting',
+		'font-size|0' => 'h2_size_setting',
+	) );
+	$css .= css_theme_mod_generator( '.main-content h3,.main-content h3 strong', array(
+		'color!'      => 'h3_color_setting',
+		'font-size|0' => 'h3_size_setting',
+	) );
 
-	$css .= '.main-content strong{';
-	if ( ! empty( get_theme_mod( 'strong_color_setting' ) ) ) {
-		$color = get_theme_mod( 'strong_color_setting' );
-		$css   .= "color:{$color}";
-	}
-	$css .= '}';
+	// footer content
+	$css .= css_theme_mod_generator( '.footer-content h1,.footer-content h2,.footer-content h3', array(
+		'font-size' => 'footer_header_size_setting',
+		'color'     => 'footer_header_color_setting',
+	), array( 'margin-top' => '0 !important' ) );
+	$css .= css_theme_mod_generator( '.footer-content p', array(
+		'font-size|0'   => 'footer_p_size_setting',
+		'line-height|1' => 'footer_p_size_setting',
+		'color'         => 'footer_p_color_setting',
+	) );
+	$css .= css_theme_mod_generator( '.footer-content a', array(
+		'font-size|0'   => 'footer_p_size_setting',
+		'line-height|1' => 'footer_p_size_setting',
+		'color'         => 'footer_a_color_setting',
+	) );
+	$css .= css_theme_mod_generator( '.copyright', array( 'color' => 'copyright_text_color_setting' ) );
+	$css .= css_theme_mod_generator( '.copyright a', array( 'color' => 'footer_a_color_setting' ) );
 
-	$css .= '.main-content h1,.main-content h1 strong{';
-	if ( ! empty( get_theme_mod( 'h1_color_setting' ) ) ) {
-		$color = get_theme_mod( 'h1_color_setting' );
-		$css   .= "color:{$color} !important;";
-	}
-	if ( ! empty( get_theme_mod( 'h1_size_setting' ) ) ) {
-		$size = explode( '|', get_theme_mod( 'h1_size_setting' ) );
-		$css  .= "font-size:{$size[0]};";
-	}
-	$css .= '}';
+	// mobile menu
+	$css .= css_theme_mod_generator( '.mobile-menu a', array( 'color' => 'footer_mobile_a_color_setting' ) );
 
-	$css .= '.main-content h2,.main-content h2 strong{';
-	if ( ! empty( get_theme_mod( 'h2_color_setting' ) ) ) {
-		$color = get_theme_mod( 'h2_color_setting' );
-		$css   .= "color:{$color} !important;";
-	}
-	if ( ! empty( get_theme_mod( 'h2_size_setting' ) ) ) {
-		$size = explode( '|', get_theme_mod( 'h2_size_setting' ) );
-		$css  .= "font-size:{$size[0]};";
-	}
-	$css .= '}';
+	// widget footer
+	$css .= css_theme_mod_generator( '.widget-footer.prose ul>li:before', array( 'background-color!' => 'footer_bullet_setting' ) );
 
-	$css .= '.main-content h3,.main-content h3 strong{';
-	if ( ! empty( get_theme_mod( 'h3_color_setting' ) ) ) {
-		$color = get_theme_mod( 'h3_color_setting' );
-		$css   .= "color:{$color};";
-	}
-	if ( ! empty( get_theme_mod( 'h3_size_setting' ) ) ) {
-		$size = explode( '|', get_theme_mod( 'h3_size_setting' ) );
-		$css  .= "font-size:{$size[0]};";
-	}
-	$css .= '}';
-
-	$css .= '.widget-primary h2{';
-	if ( ! empty( get_theme_mod( 'header_widget_text_color_setting' ) ) ) {
-		$color = get_theme_mod( 'header_widget_text_color_setting' );
-		$css   .= "color:{$color} !important;";
-	}
-	if ( ! empty( get_theme_mod( 'header_widget_color_setting' ) ) ) {
-		$color = get_theme_mod( 'header_widget_color_setting' );
-		$css   .= "background-color:{$color};";
-	}
-	$css .= '}';
-
-	$css .= '.footer-content h1,.footer-content h2,.footer-content h3{';
-	$css .= 'margin-top:0 !important;';
-	if ( ! empty ( get_theme_mod( 'footer_header_color_setting' ) ) ) {
-		$color = get_theme_mod( 'footer_header_color_setting' );
-		$css   .= "color:{$color};";
-	}
-	if ( ! empty( get_theme_mod( 'footer_header_size_setting' ) ) ) {
-		$size = get_theme_mod( 'footer_header_size_setting' );
-		$css  .= "font-size:{$size};";
-	}
-	$css .= '}';
-
-	$css .= '.footer-content p{';
-	if ( ! empty( get_theme_mod( 'footer_p_size_setting' ) ) ) {
-		$size = explode( "|", get_theme_mod( 'footer_p_size_setting' ) );
-		$css  .= "font-size:{$size[0]};line-height:{$size[1]};";
-	}
-	if ( ! empty( get_theme_mod( 'footer_p_color_setting' ) ) ) {
-		$color = get_theme_mod( 'footer_p_color_setting' );
-		$css   .= "color:{$color};";
-	}
-	$css .= '}';
-
-	$css .= '.footer-content a{';
-	if ( ! empty( get_theme_mod( 'footer_p_size_setting' ) ) ) {
-		$size = explode( "|", get_theme_mod( 'footer_p_size_setting' ) );
-		$css  .= "font-size:{$size[0]};line-height:{$size[1]};";
-	}
-	if ( ! empty( get_theme_mod( 'footer_a_color_setting' ) ) ) {
-		$color = get_theme_mod( 'footer_a_color_setting' );
-		$css   .= "color:{$color};";
-	}
-	$css .= '}';
-
-	$css .= '.mobile-menu a{';
-	if ( ! empty( get_theme_mod( 'footer_mobile_a_color_setting' ) ) ) {
-		$color = get_theme_mod( 'footer_mobile_a_color_setting' );
-		$css   .= "color:{$color};";
-	}
-	$css .= '}';
-
-	$css .= '.widget-footer.prose ul>li:before{';
-	if ( ! empty ( get_theme_mod( 'footer_bullet_setting' ) ) ) {
-		$color = get_theme_mod( 'footer_bullet_setting' );
-		$css   .= "background-color:{$color} !important;";
-	}
-	$css .= '}';
-
-	$css .= '.widget-primary.prose ul>li:before{';
-	if ( ! empty( get_theme_mod( 'bullet_widget_color_setting' ) ) ) {
-		$color = get_theme_mod( 'bullet_widget_color_setting' );
-		$css   .= "background-color:{$color} !important;";
-	}
-	$css .= '}';
-
-	$css .= '.widget-primary.prose{';
-	if ( ! empty( get_theme_mod( 'font_primary_widget_color_control' ) ) ) {
-		$color = get_theme_mod( 'font_primary_widget_color_control' );
-		$css   .= "color:{$color};";
-	}
-	$css .= '}';
-
-	$css .= '.widget-primary .wp-block-tag-cloud a{';
-	if ( ! empty( get_theme_mod( 'tag_cloud_widget_background_color_setting' ) ) ) {
-		$color = get_theme_mod( 'tag_cloud_widget_background_color_setting' );
-		$css   .= "background-color:{$color};";
-	}
-	if ( ! empty( get_theme_mod( 'tag_cloud_widget_text_color_setting' ) ) ) {
-		$color = get_theme_mod( 'tag_cloud_widget_text_color_setting' );
-		$css   .= "color:{$color};";
-	}
-	$css .= '}';
-
-	$css .= '.aioseo-breadcrumbs{';
-	if ( ! empty( get_theme_mod( 'breadcrumbs_font_size_setting' ) ) ) {
-		$size = explode( "|", get_theme_mod( 'breadcrumbs_font_size_setting' ) );
-		$css  .= "font-size:{$size[0]};";
-	}
-	if ( ! empty( get_theme_mod( 'breadcrumbs_text_color_setting' ) ) ) {
-		$color = get_theme_mod( 'breadcrumbs_text_color_setting' );
-		$css   .= "color:{$color};";
-	}
-	$css .= '}';
+	// widget sidebar
+	$css .= css_theme_mod_generator( '.widget-primary h2', array(
+		'color!'           => 'header_widget_text_color_setting',
+		'background-color' => 'header_widget_color_setting'
+	) );
+	$css .= css_theme_mod_generator( '.widget-primary.prose ul>li:before', array( 'background-color!' => 'bullet_widget_color_setting' ) );
+	$css .= css_theme_mod_generator( '.widget-primary.prose', array( 'color' => 'font_primary_widget_color_control' ) );
+	$css .= css_theme_mod_generator( '.widget-primary .wp-block-tag-cloud a', array(
+		'background-color' => 'tag_cloud_widget_background_color_setting',
+		'color'            => 'tag_cloud_widget_text_color_setting'
+	) );
+	$css .= css_theme_mod_generator( '.aioseo-breadcrumbs', array(
+		'font-size|0' => 'breadcrumbs_font_size_setting',
+		'color'       => 'breadcrumbs_text_color_setting',
+	) );
 
 	// reset tag cloud font size
 	$css .= '.wp-block-tag-cloud{display:flex;flex-wrap:wrap;}.wp-block-tag-cloud a{font-size:100% !important;margin:0 5px 5px 0;}';
@@ -1436,3 +1408,4 @@ add_action( 'customize_register', 'breadcrumbs_customizer' );
 add_filter( 'image_size_names_choose', 'image_sizes_name' );
 add_filter( 'nav_menu_css_class', 'header_menu_li_classes', 1, 3 );
 add_filter( 'nav_menu_link_attributes', 'header_menu_archer_classes', 10, 3 );
+add_filter( 'image_send_to_editor', 'make_image_relative_path' );
