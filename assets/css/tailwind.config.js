@@ -7,22 +7,22 @@ module.exports = {
     ],
     darkMode: false, // or 'media' or 'class'
     theme: {
-        // fontFamily: {
-        //     'sans': ['Montserrat', 'Sarabun', ...defaultTheme.fontFamily.sans],
-        // },
+        fontFamily: {
+            'sans': ['Montserrat', 'Sarabun', ...defaultTheme.fontFamily.sans],
+        },
         extend: {
             typography: {
                 DEFAULT: {
                     css: {
-                        color: '',
+                        color: null,
                         strong: {
-                            color: '',
+                            color: null,
                         },
                         a: {
-                            color: '',
+                            color: null,
                         },
                         'ol > li::before': {
-                            color: '',
+                            color: null,
                         }
                     }
                 }

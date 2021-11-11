@@ -1173,7 +1173,7 @@ function css_theme_mod_generator( $class, $settings = array(), $manuals = array(
 }
 
 function lorem_css_customizer() {
-	$css = 'html{';
+	$css = 'body{';
 
 	$english_font = explode( ":", get_theme_mod( 'font_english_setting', 'Montserrat:wght@400;700' ) )[0];
 	if ( strpos( $english_font, '+' ) ) {

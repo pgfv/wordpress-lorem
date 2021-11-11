@@ -8,8 +8,7 @@
 	<?php $thai_font = get_theme_mod( 'font_thai_setting', 'Sarabun:wght@400;700' ) ?>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=<?php echo $english_font; ?>&family=<?php echo $thai_font; ?>&display=swap"
-          rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');">
+    <link href="https://fonts.googleapis.com/css2?family=<?php echo $english_font; ?>&family=<?php echo $thai_font; ?>&display=swap" rel="stylesheet">
 
 	<?php wp_head(); ?>
     <style type="text/css">
@@ -25,11 +24,11 @@
             window.dataLayer = window.dataLayer || [];
 
             function gtag() {
-                dataLayer.push(arguments);
+                dataLayer.push( arguments );
             }
 
-            gtag('js', new Date());
-            gtag('config', '<?php echo $id; ?>');
+            gtag( 'js', new Date() );
+            gtag( 'config', '<?php echo $id; ?>' );
         </script>
 	<?php endif; ?>
 </head>
@@ -70,7 +69,7 @@
                 <div class="p-2 block sm:hidden">
                     <script type="text/javascript">
                         function menuToggle() {
-                            let menu = document.getElementById('nav-menu');
+                            let menu = document.getElementById( 'nav-menu' );
                             if (menu.style.display === 'grid') {
                                 menu.style.display = 'none';
                             } else {
@@ -114,7 +113,7 @@
     </section>
 
 	<?php if ( $sticky_register ): ?>
-        <section class="block md:hidden sticky top-0 mb-5 z-10">
+        <section class="block md:hidden sticky top-0 mb-5 z-10" style="min-height:56px;">
 			<?php $register_menu = register_menu(); ?>
             <nav class="flex flex-row justify-evenly w-full md:space-x-5">
 				<?php echo $register_menu[0] ?>
