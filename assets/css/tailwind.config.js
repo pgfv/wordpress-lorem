@@ -23,6 +23,14 @@ module.exports = {
                         },
                         'ol > li::before': {
                             color: null,
+                        },
+                        figure: {
+                            marginTop: null,
+                            marginBottom: null,
+                        },
+                        img: {
+                            marginTop: null,
+                            marginBottom: null,
                         }
                     }
                 }

@@ -6,6 +6,10 @@
     @apply mx-5 lg:mx-24 xl:w-4/5 xl:mx-auto;
 }
 
+.mobile-menu {
+    z-index: 10;
+}
+
 .mobile-menu a {
     @apply w-1/3 text-center;
 }
