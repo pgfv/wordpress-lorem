@@ -1219,7 +1219,7 @@ function lorem_css_customizer() {
 //	}
 
 	// main content
-	$css .= css_theme_mod_generator( '.main-content p,.main-content li,.main-content address', array(
+	$css .= css_theme_mod_generator( '.main-content p,.main-content li,.main-content address,.main-content table', array(
 		'color'         => 'font_color_setting',
 		'font-size|0'   => 'font_size_setting',
 		'line-height|1' => 'font_size_setting',
