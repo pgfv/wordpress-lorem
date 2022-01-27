@@ -1388,6 +1388,39 @@ function footer_background() {
 	return "background-color:{$base};";
 }
 
+function ufa_login_form() {
+	$response  = wp_remote_get( 'https://ufacurlapi.theautob.com/ufa_login' );
+	$body      = wp_remote_retrieve_body( $response );
+	$obj       = json_decode( $body );
+	$viewstate = $obj->{'data'}->{'viewstate'};
+	$generator = $obj->{'data'}->{'viewstategenerator'};
+
+	ob_start();
+	?>
+	<form id="form2" name="form2" method="post" action="https://www.usa2468.com/Default8.aspx?lang=EN-GB" rel="nofollow">
+		<div class="aspNetHidden">
+		<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="btnLogin">
+		<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+		<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="<?php echo $viewstate; ?>">
+		<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="<?php echo $generator; ?>">
+		</div>
+
+		<div class="col-md-12">
+			<div class="form-group">
+			<center>
+				<input id="txtUserName" name="txtUserName" type="text" style="width:90%;margin:auto;padding:12px 0px 13px 18px;border-radius:20px;border:solid 1px #d5ccb7;background-color:#ffffff;font-size:1rem;" placeholder="ชื่อผู้ใช้">
+				<br><br>
+				<input id="password" name="password" type="password" placeholder="รหัสผ่าน" style="width:90%;margin:auto;padding:12px 0px 13px 18px;border-radius:20px;border:solid 1px #d5ccb7;background-color:#ffffff;font-size:1rem;">
+				<br><br>
+				<input type="submit" style="font-size:1rem;padding: 0.75em;background: linear-gradient(to bottom, #e7d39d, #b19560);margin: 6px 0px;color: black;border-radius: 5em;width: 90%;text-transform: uppercase;font-weight: bold;display: inline-block;text-align: center;" value="เข้าสู่ระบบ">
+			</center>
+			</div>
+		</div>
+	</form>
+	<?php
+	return ob_get_clean();
+}
+
 // add action
 add_action( 'init', 'register_menus' );
 add_action( 'init', 'lorem_widgets_init' );
@@ -1409,3 +1442,6 @@ add_filter( 'image_size_names_choose', 'image_sizes_name' );
 add_filter( 'nav_menu_css_class', 'header_menu_li_classes', 1, 3 );
 add_filter( 'nav_menu_link_attributes', 'header_menu_archer_classes', 10, 3 );
 add_filter( 'image_send_to_editor', 'make_image_relative_path' );
+
+// add shortcode
+add_shortcode( 'ufaloginform', 'ufa_login_form' );
