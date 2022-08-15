@@ -1,7 +1,7 @@
 {
-  "name": "lorem_template",
+  "name": "dori",
   "version": "1.0.0",
-  "description": "lorem template for fever",
+  "description": "dori template for fever",
   "scripts": {
     "tailwind": "npx tailwindcss -i ./assets/css/site.css -c ./assets/css/tailwind.config.js -o ./assets/css/style.css --jit --watch --minify",
     "build": "wp-scripts build"

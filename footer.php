@@ -1,8 +1,7 @@
 </main>
-<footer class="mt-5 pt-5 pb-20 md:pb-5"
-        style="<?php echo footer_background(); ?>">
+<footer class="mt-5 pt-5 pb-20 md:pb-5 main-footer">
     <section class="footer-content flex flex-col md:flex-row md:space-x-10 mb-5 main-container">
-		<?php $widget_style = footer_widget_style(); ?>
+		<?php $widget_style = LoremTheme::footer_widget_style(); ?>
 
         <div class="<?php echo $widget_style[1]; ?>">
 			<?php dynamic_sidebar( 'footer' ); ?>
@@ -29,7 +28,7 @@
 	<?php if ( get_theme_mod( 'footer_mobile_menu_enable_setting', true ) ) : ?>
         <section class="mobile-menu fixed bottom-0 py-5 w-full md:hidden"
                  style="background-color: <?php echo get_theme_mod( 'footer_mobile_color_setting' ); ?>;">
-			<?php $mobile_menu = mobile_menu(); ?>
+			<?php $mobile_menu = LoremTheme::menu_with_count( 'mobile_menu' ); ?>
             <nav class="flex flex-row justify-evenly text-gray-300 text-sm px-3">
 				<?php echo $mobile_menu[0] ?>
             </nav>

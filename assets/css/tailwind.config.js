@@ -31,6 +31,10 @@ module.exports = {
                         img: {
                             marginTop: null,
                             marginBottom: null,
+                        },
+                        h2: {
+                            fontSize: null,
+                            color: null,
                         }
                     }
                 }

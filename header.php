@@ -11,9 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=<?php echo $english_font; ?>&family=<?php echo $thai_font; ?>&display=swap" rel="stylesheet">
 
 	<?php wp_head(); ?>
-    <style type="text/css">
-        <?php echo lorem_css_customizer(); ?>
-    </style>
 
 	<?php
 	if ( ! empty( get_theme_mod( 'google_analytics_setting' ) ) ) :
@@ -55,12 +52,11 @@
 </section>
 
 <!-- wrapper -->
-<section class="flex flex-col min-h-screen"
-         style="background-color:<?php echo get_theme_mod( 'background_color_setting' ); ?>;">
-
-    <header class="flex flex-col"
-            style="<?php echo header_background() ?>">
-
+<section class="flex flex-col min-h-screen wrapper-section">
+    
+    <header class="flex flex-col main-header">
+        <?php LoremTheme::top_header(); ?>
+        
         <section class="flex flex-col md:flex-row justify-between main-container">
             <section class="py-3 flex flex-row justify-between items-center">
                 <div class="w-1/6 md:w-full">
@@ -97,24 +93,28 @@
             </section>
 
 			<?php $sticky_register = get_theme_mod( 'header_sticky_register_setting' ); ?>
-            <section
-                    class="register-menu pb-3 md:py-5 md:flex items-center<?php if ( $sticky_register ): ?> hidden<?php endif; ?>">
-				<?php $register_menu = register_menu(); ?>
+            <section class="register-menu pb-3 md:py-5 md:flex items-center<?php if ( $sticky_register ): ?> hidden<?php endif; ?>">
+				<?php $register_menu = LoremTheme::menu_with_count( 'register_menu' ); ?>
                 <nav class="flex flex-row justify-evenly w-full md:space-x-5">
-					<?php echo $register_menu[0] ?>
+					<?php echo $register_menu[0]; ?>
                 </nav>
             </section>
         </section>
+
+        <?php LoremTheme::header_banner(); ?>
+
+        <section id="nav-menu" class="header-menu hidden md:block py-5 md:py-0">
+            <?php echo LoremTheme::header_menu(); ?>
+            <?php if ( ! empty( get_theme_mod( 'header_foot_content_setting' ) ) ) : ?>
+            <div class="nav-content text-center"><?php echo get_theme_mod( 'header_foot_content_setting' ); ?></div>
+            <?php endif; ?>
+        </section>
     </header>
 
-    <section id="nav-menu" class="header-menu hidden md:block py-5 md:py-0"
-             style="background-color:<?php echo get_theme_mod( 'header_menu_color_setting' ) ?>;">
-		<?php echo header_menu_list(); ?>
-    </section>
 
 	<?php if ( $sticky_register ): ?>
         <section class="block md:hidden sticky top-0 mb-5 z-10" style="min-height:56px;">
-			<?php $register_menu = register_menu(); ?>
+			<?php $register_menu = LoremTheme::menu_with_count( 'register_menu' ); ?>
             <nav class="flex flex-row justify-evenly w-full md:space-x-5">
 				<?php echo $register_menu[0] ?>
             </nav>
