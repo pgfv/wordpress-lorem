@@ -24,6 +24,13 @@
 		<?php endif; ?>
     </section>
 
+	<?php if ( get_theme_mod( 'footer_logo_setting', false ) && function_exists( 'has_custom_logo' ) && has_custom_logo() ) : ?>
+        <div class="footer-logo mx-auto mb-4"
+             style="width:<?php echo esc_attr( get_theme_mod( 'footer_logo_width_setting', '160px' ) ); ?>;">
+			<?php the_custom_logo(); ?>
+        </div>
+	<?php endif; ?>
+
     <div class="text-center text-xs pt-3 copyright"><?php echo get_theme_mod( 'copyright_text_setting' ) ?></div>
 
 	<?php if ( get_theme_mod( 'footer_mobile_menu_enable_setting', true ) ) : ?>

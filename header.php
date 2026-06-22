@@ -4,11 +4,10 @@
     <meta charset="<?php bloginfo( 'charset' ); ?>"/>
     <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 
-	<?php $english_font = get_theme_mod( 'font_english_setting', 'Montserrat:wght@400;700' ); ?>
-	<?php $thai_font = get_theme_mod( 'font_thai_setting', 'Sarabun:wght@400;700' ) ?>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=<?php echo $english_font; ?>&family=<?php echo $thai_font; ?>&display=swap" rel="stylesheet">
+	<?php
+	// self-hosted fonts: inline @font-face, no render-blocking third-party request
+	echo lorem_fonts_output();
+	?>
 
 	<?php wp_head(); ?>
     <style type="text/css">
@@ -113,7 +112,7 @@
     </section>
 
 	<?php if ( $sticky_register ): ?>
-        <section class="block md:hidden sticky top-0 mb-5 z-10" style="min-height:56px;">
+        <section class="register-menu block md:hidden sticky top-0 mb-5 z-10" style="min-height:56px;">
 			<?php $register_menu = register_menu(); ?>
             <nav class="flex flex-row justify-evenly w-full md:space-x-5">
 				<?php echo $register_menu[0] ?>

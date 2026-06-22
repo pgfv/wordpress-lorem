@@ -119,7 +119,15 @@ function header_menu_archer_classes( $atts, $item, $args ) {
 }
 
 function register_menu() {
-	return menu_with_count( 'register-menu' );
+	$menu = menu_with_count( 'register-menu' );
+
+	// in button mode, drop menu images so the link renders as a text button
+	// with no image request (a display:none image would still be downloaded)
+	if ( get_theme_mod( 'header_register_is_button_setting', false ) ) {
+		$menu[0] = preg_replace( '/<img[^>]*>/i', '', $menu[0] );
+	}
+
+	return $menu;
 }
 
 function mobile_menu() {
@@ -232,6 +240,32 @@ function font_theme_customizer( $wp_customizer ) {
 		'label'    => 'H3 Size',
 		'section'  => 'theme_colors',
 		'settings' => 'h3_size_setting',
+		'type'     => 'select',
+		'choices'  => THEME_FONT_SIZE,
+	) ) );
+
+	// theme setting: h4 size
+	$wp_customizer->add_setting( 'h4_size_setting', array(
+		'default' => '1.25rem|1.75rem',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'h4_size_control', array(
+		'label'    => 'H4 Size',
+		'section'  => 'theme_colors',
+		'settings' => 'h4_size_setting',
+		'type'     => 'select',
+		'choices'  => THEME_FONT_SIZE,
+	) ) );
+
+	// theme setting: h5 size
+	$wp_customizer->add_setting( 'h5_size_setting', array(
+		'default' => '1.125rem|1.75rem',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'h5_size_control', array(
+		'label'    => 'H5 Size',
+		'section'  => 'theme_colors',
+		'settings' => 'h5_size_setting',
 		'type'     => 'select',
 		'choices'  => THEME_FONT_SIZE,
 	) ) );
@@ -387,108 +421,121 @@ function header_theme_customizer( $wp_customizer ) {
 		'type'     => 'checkbox',
 	) ) );
 
-//	// register button
-//	$wp_customizer->add_setting( 'header_register_is_button_setting', array(
-//		'default' => false,
-//	) );
-//
-//	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_is_button_control', array(
-//		'label'    => 'Display as button',
-//		'section'  => 'header_register_section',
-//		'settings' => 'header_register_is_button_setting',
-//		'type'     => 'checkbox',
-//	) ) );
-//
-//	// register button border size
-//	$wp_customizer->add_setting( 'header_register_button_border_size_setting', array(
-//		'default' => '1px'
-//	) );
-//
-//	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_border_size_control',
-//		array(
-//			'label'    => 'Button border size',
-//			'section'  => 'header_register_section',
-//			'settings' => 'header_register_button_border_size_setting',
-//			'type'     => 'text',
-//		) ) );
-//
-//	// register button border color
-//	$wp_customizer->add_setting( 'header_register_button_border_color_setting', array(
-//		'default' => '#000000',
-//	) );
-//
-//	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
-//		'header_register_button_border_color_control',
-//		array(
-//			'label'    => 'Border Color',
-//			'section'  => 'header_register_section',
-//			'settings' => 'header_register_button_border_color_setting',
-//		) ) );
-//
-//	// register button background
-//	$wp_customizer->add_setting( 'header_register_button_background_setting', array(
-//		'default' => '#9CA3AF',
-//	) );
-//
-//	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
-//		'header_register_button_background_control',
-//		array(
-//			'label'    => 'Background Color',
-//			'section'  => 'header_register_section',
-//			'settings' => 'header_register_button_background_setting',
-//		) ) );
-//
-//	// register button background hover
-//	$wp_customizer->add_setting( 'header_register_button_background_hover_setting', array(
-//		'default' => '#9CA3AF',
-//	) );
-//
-//	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
-//		'header_register_button_background_hover_control',
-//		array(
-//			'label'    => 'Hover Background Color',
-//			'section'  => 'header_register_section',
-//			'settings' => 'header_register_button_background_hover_setting',
-//		) ) );
-//
-//	// register button padding x, y
-//	$wp_customizer->add_setting( 'header_register_button_padding_x_setting', array(
-//		'default' => '10px',
-//	) );
-//
-//	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_padding_x_control',
-//		array(
-//			'label'    => 'Button Padding Horizon',
-//			'section'  => 'header_register_section',
-//			'settings' => 'header_register_button_padding_x_setting',
-//			'type'     => 'text',
-//		) ) );
-//
-//	$wp_customizer->add_setting( 'header_register_button_padding_y_setting', array(
-//		'default' => '10px',
-//	) );
-//
-//	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_padding_y_control',
-//		array(
-//			'label'    => 'Button Padding Vertical',
-//			'section'  => 'header_register_section',
-//			'settings' => 'header_register_button_padding_y_setting',
-//			'type'     => 'text',
-//		) ) );
-//
-//	// register button text size
-//	$wp_customizer->add_setting( 'header_register_button_text_size_setting', array(
-//		'default' => '1rem|1.5rem',
-//	) );
-//
-//	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_text_size_control',
-//		array(
-//			'label'    => 'Button Font Size',
-//			'section'  => 'header_register_section',
-//			'settings' => 'header_register_button_text_size_setting',
-//			'type'     => 'select',
-//			'choices'  => THEME_FONT_SIZE,
-//		) ) );
+	// register button
+	$wp_customizer->add_setting( 'header_register_is_button_setting', array(
+		'default' => false,
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_is_button_control', array(
+		'label'    => 'Display as button',
+		'section'  => 'header_register_section',
+		'settings' => 'header_register_is_button_setting',
+		'type'     => 'checkbox',
+	) ) );
+
+	// register button border size
+	$wp_customizer->add_setting( 'header_register_button_border_size_setting', array(
+		'default' => '1px'
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_border_size_control',
+		array(
+			'label'    => 'Button border size',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_border_size_setting',
+			'type'     => 'text',
+		) ) );
+
+	// register button border color
+	$wp_customizer->add_setting( 'header_register_button_border_color_setting', array(
+		'default' => '#000000',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
+		'header_register_button_border_color_control',
+		array(
+			'label'    => 'Border Color',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_border_color_setting',
+		) ) );
+
+	// register button background
+	$wp_customizer->add_setting( 'header_register_button_background_setting', array(
+		'default' => '#9CA3AF',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
+		'header_register_button_background_control',
+		array(
+			'label'    => 'Background Color',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_background_setting',
+		) ) );
+
+	// register button background hover
+	$wp_customizer->add_setting( 'header_register_button_background_hover_setting', array(
+		'default' => '#9CA3AF',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
+		'header_register_button_background_hover_control',
+		array(
+			'label'    => 'Hover Background Color',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_background_hover_setting',
+		) ) );
+
+	// register button text color
+	$wp_customizer->add_setting( 'header_register_button_text_color_setting', array(
+		'default' => '#ffffff',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer,
+		'header_register_button_text_color_control',
+		array(
+			'label'    => 'Text Color',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_text_color_setting',
+		) ) );
+
+	// register button padding x, y
+	$wp_customizer->add_setting( 'header_register_button_padding_x_setting', array(
+		'default' => '10px',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_padding_x_control',
+		array(
+			'label'    => 'Button Padding Horizon',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_padding_x_setting',
+			'type'     => 'text',
+		) ) );
+
+	$wp_customizer->add_setting( 'header_register_button_padding_y_setting', array(
+		'default' => '10px',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_padding_y_control',
+		array(
+			'label'    => 'Button Padding Vertical',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_padding_y_setting',
+			'type'     => 'text',
+		) ) );
+
+	// register button text size
+	$wp_customizer->add_setting( 'header_register_button_text_size_setting', array(
+		'default' => '1rem|1.5rem',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_text_size_control',
+		array(
+			'label'    => 'Button Font Size',
+			'section'  => 'header_register_section',
+			'settings' => 'header_register_button_text_size_setting',
+			'type'     => 'select',
+			'choices'  => THEME_FONT_SIZE,
+		) ) );
 }
 
 function footer_theme_customizer( $wp_customizer ) {
@@ -537,6 +584,37 @@ function footer_theme_customizer( $wp_customizer ) {
 		'label'    => 'Mobile Menu Background Color',
 		'section'  => 'footer_color_section',
 		'settings' => 'footer_mobile_color_setting',
+	) ) );
+
+	$wp_customizer->add_section( 'footer_logo_section', array(
+		'title'       => __( 'Footer Logo', 'lorem' ),
+		'description' => __( 'Show the site logo in the footer. Uses the same logo as the header (Customize → Site Identity).', 'lorem' ),
+		'panel'       => 'footer_customizer_panel',
+	) );
+
+	// footer logo enable
+	$wp_customizer->add_setting( 'footer_logo_setting', array(
+		'default' => false,
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'footer_logo_control', array(
+		'label'    => 'Show Logo in Footer',
+		'section'  => 'footer_logo_section',
+		'settings' => 'footer_logo_setting',
+		'type'     => 'checkbox',
+	) ) );
+
+	// footer logo width
+	$wp_customizer->add_setting( 'footer_logo_width_setting', array(
+		'default' => '160px',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'footer_logo_width_control', array(
+		'label'       => 'Logo Width',
+		'description' => __( 'e.g. 160px or 12rem', 'lorem' ),
+		'section'     => 'footer_logo_section',
+		'settings'    => 'footer_logo_width_setting',
+		'type'        => 'text',
 	) ) );
 
 	$wp_customizer->add_section( 'footer_columns_section', array(
@@ -852,6 +930,28 @@ function colors_theme_customizer( $wp_customizer ) {
 		'label'    => 'H3',
 		'section'  => 'theme_colors',
 		'settings' => 'h3_color_setting',
+	) ) );
+
+	// theme color: h4
+	$wp_customizer->add_setting( 'h4_color_setting', array(
+		'default' => '#111827',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'h4_color_control', array(
+		'label'    => 'H4',
+		'section'  => 'theme_colors',
+		'settings' => 'h4_color_setting',
+	) ) );
+
+	// theme color: h5
+	$wp_customizer->add_setting( 'h5_color_setting', array(
+		'default' => '#111827',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Color_Control( $wp_customizer, 'h5_color_control', array(
+		'label'    => 'H5',
+		'section'  => 'theme_colors',
+		'settings' => 'h5_color_setting',
 	) ) );
 }
 
@@ -1172,6 +1272,55 @@ function css_theme_mod_generator( $class, $settings = array(), $manuals = array(
 	return "{$class}{{$css}}";
 }
 
+/**
+ * Output self-hosted @font-face CSS for the selected English/Thai fonts.
+ *
+ * Inlines the local font CSS (no render-blocking request, no third-party
+ * connection). If a selected family has no local file, it gracefully falls
+ * back to loading that family from Google Fonts (non-blocking).
+ */
+function lorem_fonts_output() {
+	$fonts_uri = get_template_directory_uri() . '/assets/fonts';
+	$settings  = array(
+		get_theme_mod( 'font_english_setting', 'Montserrat:wght@400;700' ),
+		get_theme_mod( 'font_thai_setting', 'Sarabun:wght@400;700' ),
+	);
+
+	$inline_css = '';
+	$missing    = array();
+
+	foreach ( $settings as $setting ) {
+		$family = explode( ':', $setting )[0];
+		$slug   = strtolower( str_replace( '+', '-', $family ) );
+		$file   = get_template_directory() . "/assets/fonts/{$slug}.css";
+
+		if ( is_readable( $file ) ) {
+			$inline_css .= file_get_contents( $file );
+		} else {
+			$missing[] = $setting;
+		}
+	}
+
+	$output = '';
+
+	if ( $inline_css ) {
+		$inline_css = str_replace( '%FONTS_URL%', $fonts_uri, $inline_css );
+		$output     .= "<style id=\"lorem-self-hosted-fonts\">{$inline_css}</style>\n";
+	}
+
+	// fallback: load any family we don't have locally from Google (non-blocking)
+	if ( $missing ) {
+		$families = implode( '&family=', array_map( 'esc_attr', $missing ) );
+		$url      = "https://fonts.googleapis.com/css2?family={$families}&display=swap";
+		$output   .= "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n";
+		$output   .= "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n";
+		$output   .= "<link rel=\"stylesheet\" href=\"{$url}\" media=\"print\" onload=\"this.media='all'\">\n";
+		$output   .= "<noscript><link rel=\"stylesheet\" href=\"{$url}\"></noscript>\n";
+	}
+
+	return $output;
+}
+
 function lorem_css_customizer() {
 	$css = 'body{';
 
@@ -1205,18 +1354,30 @@ function lorem_css_customizer() {
 	}
 	$css .= '}';
 
-	// register menu
-//	$register_menu_button = get_theme_mod( 'header_register_is_button_setting', false );
-//	if ( $register_menu_button ) {
-//		$css .= '.register-menu a{';
-//
-//		$border = get_theme_mod( 'header_register_button_border_size_setting' );
-//		$color  = get_theme_mod( 'header_register_button_border_color_setting' );
-//		$css    .= "border:solid {$border} {$color};";
-//
-//
-//		$css .= '}';
-//	}
+	// register menu button
+	if ( get_theme_mod( 'header_register_is_button_setting', false ) ) {
+		$border     = get_theme_mod( 'header_register_button_border_size_setting', '1px' );
+		$border_col = get_theme_mod( 'header_register_button_border_color_setting', '#000000' );
+		$bg         = get_theme_mod( 'header_register_button_background_setting', '#9CA3AF' );
+		$bg_hover   = get_theme_mod( 'header_register_button_background_hover_setting', '#9CA3AF' );
+		$text_col   = get_theme_mod( 'header_register_button_text_color_setting', '#ffffff' );
+		$px         = get_theme_mod( 'header_register_button_padding_x_setting', '10px' );
+		$py         = get_theme_mod( 'header_register_button_padding_y_setting', '10px' );
+		$text_size  = explode( '|', get_theme_mod( 'header_register_button_text_size_setting', '1rem|1.5rem' ) );
+
+		$css .= '.register-menu a{';
+		$css .= 'display:inline-block;text-align:center;border-radius:0.375rem;text-decoration:none;';
+		$css .= "border:solid {$border} {$border_col};";
+		$css .= "background-color:{$bg};";
+		$css .= "color:{$text_col};";
+		$css .= "padding:{$py} {$px};";
+		$css .= "font-size:{$text_size[0]};line-height:{$text_size[1]};";
+		$css .= '}';
+		$css .= ".register-menu a:hover{background-color:{$bg_hover};}";
+		// reveal the menu title text so the button shows a label instead of an image
+		$css .= '.register-menu a .visuallyhidden{display:inline;}';
+		$css .= '.register-menu a img,.register-menu a picture{display:none;}';
+	}
 
 	// main content
 	$css .= css_theme_mod_generator( '.main-content p,.main-content li,.main-content address,.main-content table', array(
@@ -1236,6 +1397,14 @@ function lorem_css_customizer() {
 	$css .= css_theme_mod_generator( '.main-content h3,.main-content h3 strong', array(
 		'color!'      => 'h3_color_setting',
 		'font-size|0' => 'h3_size_setting',
+	) );
+	$css .= css_theme_mod_generator( '.main-content h4,.main-content h4 strong', array(
+		'color!'      => 'h4_color_setting',
+		'font-size|0' => 'h4_size_setting',
+	) );
+	$css .= css_theme_mod_generator( '.main-content h5,.main-content h5 strong', array(
+		'color!'      => 'h5_color_setting',
+		'font-size|0' => 'h5_size_setting',
 	) );
 
 	// footer content
