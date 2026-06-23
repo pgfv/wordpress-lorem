@@ -24,9 +24,18 @@
 		<?php endif; ?>
     </section>
 
-	<?php if ( get_theme_mod( 'footer_logo_setting', false ) && function_exists( 'has_custom_logo' ) && has_custom_logo() ) : ?>
-        <div class="footer-logo mx-auto mb-4"
-             style="width:<?php echo esc_attr( get_theme_mod( 'footer_logo_width_setting', '160px' ) ); ?>;">
+	<?php if ( get_theme_mod( 'footer_logo_setting', false ) && function_exists( 'has_custom_logo' ) && has_custom_logo() ) :
+		$logo_align_classes = array(
+			'left'   => 'mr-auto',
+			'center' => 'mx-auto',
+			'right'  => 'ml-auto',
+		);
+		$logo_align = get_theme_mod( 'footer_logo_align_setting', 'center' );
+		$logo_align = isset( $logo_align_classes[ $logo_align ] ) ? $logo_align_classes[ $logo_align ] : 'mx-auto';
+		$logo_width = get_theme_mod( 'footer_logo_width_setting', '160px' );
+		?>
+        <div class="footer-logo <?php echo $logo_align; ?> mb-4"
+             style="width:<?php echo esc_attr( $logo_width ); ?>;">
 			<?php the_custom_logo(); ?>
         </div>
 	<?php endif; ?>

@@ -617,6 +617,23 @@ function footer_theme_customizer( $wp_customizer ) {
 		'type'        => 'text',
 	) ) );
 
+	// footer logo alignment
+	$wp_customizer->add_setting( 'footer_logo_align_setting', array(
+		'default' => 'center',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'footer_logo_align_control', array(
+		'label'    => 'Logo Alignment',
+		'section'  => 'footer_logo_section',
+		'settings' => 'footer_logo_align_setting',
+		'type'     => 'select',
+		'choices'  => array(
+			'left'   => __( 'Left', 'lorem' ),
+			'center' => __( 'Center', 'lorem' ),
+			'right'  => __( 'Right', 'lorem' ),
+		),
+	) ) );
+
 	$wp_customizer->add_section( 'footer_columns_section', array(
 		'title'       => __( 'Columns', 'lorem' ),
 		'description' => __( 'Change how many columns you want to display', 'lorem' ),
