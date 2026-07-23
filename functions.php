@@ -112,7 +112,8 @@ function header_menu_archer_classes( $atts, $item, $args ) {
 	}
 
 	if ( $args->theme_location == 'register-menu' ) {
-		$atts['class'] = $class;
+		// flex-1 = equal width on desktop / full width when stacked on mobile; text-center centers the label or image
+		$atts['class'] = trim( "flex-1 text-center {$class}" );
 	}
 
 	return $atts;
@@ -403,6 +404,55 @@ function header_theme_customizer( $wp_customizer ) {
 			'type'     => 'checkbox',
 		) ) );
 
+	$wp_customizer->add_section( 'header_logo_section', array(
+		'title'       => __( 'Header Logo', 'lorem' ),
+		'description' => __( 'Set the header logo size (upload the logo under Site Identity). Sized by height so it stays consistent regardless of the image\'s transparent padding.', 'lorem' ),
+		'panel'       => 'header_customizer_panel',
+	) );
+
+	// header logo height (mobile)
+	$wp_customizer->add_setting( 'header_logo_height_mobile_setting', array(
+		'default' => '50px',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_logo_height_mobile_control', array(
+		'label'       => 'Logo Height (Mobile)',
+		'description' => __( 'e.g. 50px or 3rem', 'lorem' ),
+		'section'     => 'header_logo_section',
+		'settings'    => 'header_logo_height_mobile_setting',
+		'type'        => 'text',
+	) ) );
+
+	// header logo height (desktop)
+	$wp_customizer->add_setting( 'header_logo_height_desktop_setting', array(
+		'default' => '64px',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_logo_height_desktop_control', array(
+		'label'       => 'Logo Height (Desktop)',
+		'description' => __( 'e.g. 64px or 4rem', 'lorem' ),
+		'section'     => 'header_logo_section',
+		'settings'    => 'header_logo_height_desktop_setting',
+		'type'        => 'text',
+	) ) );
+
+	// header logo alignment on mobile (hamburger stays pinned to the right)
+	$wp_customizer->add_setting( 'header_logo_mobile_align_setting', array(
+		'default' => 'left',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_logo_mobile_align_control', array(
+		'label'    => 'Logo Position (Mobile)',
+		'section'  => 'header_logo_section',
+		'settings' => 'header_logo_mobile_align_setting',
+		'type'     => 'select',
+		'choices'  => array(
+			'left'   => __( 'Left', 'lorem' ),
+			'center' => __( 'Center', 'lorem' ),
+			'right'  => __( 'Right', 'lorem' ),
+		),
+	) ) );
+
 	$wp_customizer->add_section( 'header_register_section', array(
 		'title'       => __( 'Register Menu', 'lorem' ),
 		'description' => __( 'Register menu customizer', 'lorem' ),
@@ -535,6 +585,42 @@ function header_theme_customizer( $wp_customizer ) {
 			'settings' => 'header_register_button_text_size_setting',
 			'type'     => 'select',
 			'choices'  => THEME_FONT_SIZE,
+		) ) );
+
+	// register button width on desktop (mobile stays full-width stacked)
+	// leave empty for auto width (button hugs its label)
+	$wp_customizer->add_setting( 'header_register_button_width_setting', array(
+		'default' => '150px',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_width_control',
+		array(
+			'label'       => 'Button Width (Desktop)',
+			'description' => 'e.g. 150px or 10rem. Leave empty for auto (fits the label).',
+			'section'     => 'header_register_section',
+			'settings'    => 'header_register_button_width_setting',
+			'type'        => 'text',
+		) ) );
+
+	// register button attention effect (makes login/register stand out)
+	$wp_customizer->add_setting( 'header_register_button_effect_setting', array(
+		'default' => 'none',
+	) );
+
+	$wp_customizer->add_control( new WP_Customize_Control( $wp_customizer, 'header_register_button_effect_control',
+		array(
+			'label'       => 'Button Attention Effect',
+			'description' => 'Animate the login/register buttons so they stand out.',
+			'section'     => 'header_register_section',
+			'settings'    => 'header_register_button_effect_setting',
+			'type'        => 'select',
+			'choices'     => array(
+				'none'  => 'None',
+				'blink' => 'Blink',
+				'pulse' => 'Pulse (zoom in/out)',
+				'glow'  => 'Glow',
+				'shake' => 'Shake',
+			),
 		) ) );
 }
 
@@ -1371,6 +1457,42 @@ function lorem_css_customizer() {
 	}
 	$css .= '}';
 
+	// header logo: size by HEIGHT (not container width) so the header bar height is
+	// predictable on desktop and the logo stays legible on mobile — this also absorbs
+	// any transparent padding baked into the uploaded image, which end users can't crop.
+	$logo_h_mobile  = trim( get_theme_mod( 'header_logo_height_mobile_setting', '50px' ) );
+	$logo_h_desktop = trim( get_theme_mod( 'header_logo_height_desktop_setting', '64px' ) );
+	$css .= '.site-logo{flex:0 0 auto;}';
+	$css .= '.custom-logo{display:block;width:auto;max-width:100%;margin:0;';
+	if ( $logo_h_mobile !== '' ) {
+		$css .= "height:{$logo_h_mobile};";
+	}
+	$css .= '}';
+	if ( $logo_h_desktop !== '' ) {
+		$css .= "@media (min-width:768px){.custom-logo{height:{$logo_h_desktop};}}";
+	}
+
+	// header logo position on mobile: the hamburger is pinned to the right (out of flow)
+	// so the logo can sit left / centre / right without the two colliding. desktop is untouched.
+	$logo_m_align = get_theme_mod( 'header_logo_mobile_align_setting', 'left' );
+	$logo_justify = 'flex-start';
+	if ( $logo_m_align === 'center' ) {
+		$logo_justify = 'center';
+	} elseif ( $logo_m_align === 'right' ) {
+		$logo_justify = 'flex-end';
+	}
+	$css .= '@media (max-width:767px){';
+	$css .= '.header-logo-row{position:relative;justify-content:' . $logo_justify . ';}';
+	$css .= '.site-hamburger{position:absolute;right:0;top:50%;transform:translateY(-50%);margin:0;}';
+	if ( $logo_m_align === 'right' ) {
+		// leave room so a right-aligned logo never sits under the hamburger
+		$css .= '.header-logo-row{padding-right:2.75rem;}';
+	}
+	$css .= '}';
+
+	// register menu images: keep responsive so an oversized image never overflows its button cell
+	$css .= '.register-menu a img{max-width:100%;height:auto;}';
+
 	// register menu button
 	if ( get_theme_mod( 'header_register_is_button_setting', false ) ) {
 		$border     = get_theme_mod( 'header_register_button_border_size_setting', '1px' );
@@ -1383,7 +1505,7 @@ function lorem_css_customizer() {
 		$text_size  = explode( '|', get_theme_mod( 'header_register_button_text_size_setting', '1rem|1.5rem' ) );
 
 		$css .= '.register-menu a{';
-		$css .= 'display:inline-block;text-align:center;border-radius:0.375rem;text-decoration:none;';
+		$css .= 'display:block;text-align:center;border-radius:0.375rem;text-decoration:none;';
 		$css .= "border:solid {$border} {$border_col};";
 		$css .= "background-color:{$bg};";
 		$css .= "color:{$text_col};";
@@ -1394,6 +1516,41 @@ function lorem_css_customizer() {
 		// reveal the menu title text so the button shows a label instead of an image
 		$css .= '.register-menu a .visuallyhidden{display:inline;}';
 		$css .= '.register-menu a img,.register-menu a picture{display:none;}';
+	}
+
+	// desktop: stop the buttons stretching full width (flex-1); give them a fixed width
+	// so they read as tidy, equal, aligned buttons. mobile keeps the stacked full-width layout.
+	$reg_width = trim( get_theme_mod( 'header_register_button_width_setting', '150px' ) );
+	$css       .= '@media (min-width:768px){';
+	$css       .= '.register-menu nav{width:auto;}';
+	if ( $reg_width !== '' ) {
+		$css .= ".register-menu a{flex:0 0 auto;width:{$reg_width};}";
+	} else {
+		// empty setting = auto width: button hugs its label but stops stretching
+		$css .= '.register-menu a{flex:0 0 auto;}';
+	}
+	$css .= '}';
+
+	// register button attention effect: animate the buttons so they stand out
+	$reg_effect = get_theme_mod( 'header_register_button_effect_setting', 'none' );
+	if ( $reg_effect === 'blink' ) {
+		$css .= '@keyframes reg-blink{0%,100%{opacity:1}50%{opacity:.35}}';
+		$css .= '.register-menu a{animation:reg-blink 1.2s ease-in-out infinite;}';
+	} elseif ( $reg_effect === 'pulse' ) {
+		$css .= '@keyframes reg-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}';
+		$css .= '.register-menu a{animation:reg-pulse 1.1s ease-in-out infinite;will-change:transform;}';
+	} elseif ( $reg_effect === 'glow' ) {
+		// glow colour follows the button background so it matches the theme
+		$glow = trim( get_theme_mod( 'header_register_button_background_setting', '#9CA3AF' ) );
+		$css  .= "@keyframes reg-glow{0%,100%{box-shadow:0 0 0 0 {$glow}66}50%{box-shadow:0 0 14px 5px {$glow}cc}}";
+		$css  .= '.register-menu a{animation:reg-glow 1.4s ease-in-out infinite;}';
+	} elseif ( $reg_effect === 'shake' ) {
+		$css .= '@keyframes reg-shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}';
+		$css .= '.register-menu a{animation:reg-shake .6s ease-in-out infinite;will-change:transform;}';
+	}
+	// accessibility: honour users who ask the OS to reduce motion
+	if ( $reg_effect !== 'none' ) {
+		$css .= '@media (prefers-reduced-motion:reduce){.register-menu a{animation:none;}}';
 	}
 
 	// main content

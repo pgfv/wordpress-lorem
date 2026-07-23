@@ -61,11 +61,11 @@
             style="<?php echo header_background() ?>">
 
         <section class="flex flex-col md:flex-row justify-between main-container">
-            <section class="py-3 flex flex-row justify-between items-center">
-                <div class="w-1/6 md:w-full">
+            <section class="py-3 flex flex-row justify-between items-center header-logo-row">
+                <div class="site-logo">
 					<?php the_custom_logo(); ?>
                 </div>
-                <div class="p-2 block sm:hidden">
+                <div class="p-2 block sm:hidden site-hamburger">
                     <script type="text/javascript">
                         function menuToggle() {
                             let menu = document.getElementById( 'nav-menu' );
@@ -99,7 +99,7 @@
             <section
                     class="register-menu pb-3 md:py-5 md:flex items-center<?php if ( $sticky_register ): ?> hidden<?php endif; ?>">
 				<?php $register_menu = register_menu(); ?>
-                <nav class="flex flex-row justify-evenly w-full md:space-x-5">
+                <nav class="flex flex-col md:flex-row w-full gap-5">
 					<?php echo $register_menu[0] ?>
                 </nav>
             </section>
@@ -114,7 +114,7 @@
 	<?php if ( $sticky_register ): ?>
         <section class="register-menu block md:hidden sticky top-0 mb-5 z-10" style="min-height:56px;">
 			<?php $register_menu = register_menu(); ?>
-            <nav class="flex flex-row justify-evenly w-full md:space-x-5">
+            <nav class="flex flex-col md:flex-row w-full gap-5">
 				<?php echo $register_menu[0] ?>
             </nav>
         </section>
