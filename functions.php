@@ -1462,15 +1462,25 @@ function lorem_css_customizer() {
 	// any transparent padding baked into the uploaded image, which end users can't crop.
 	$logo_h_mobile  = trim( get_theme_mod( 'header_logo_height_mobile_setting', '50px' ) );
 	$logo_h_desktop = trim( get_theme_mod( 'header_logo_height_desktop_setting', '64px' ) );
+	// NOTE: image-optimisation plugins (WebP converters) rewrite the logo <img> into
+	// <picture class="custom-logo"><img ...></picture>, moving the class onto <picture>.
+	// Sizing only .custom-logo then constrains the <picture> box while the inner <img>
+	// keeps its natural 350x200 size and overflows into the register buttons on mobile.
+	// Target the inner <img> too so both markups get the same height, and scope to the
+	// header (.site-logo) so the footer logo (own width setting) is left alone.
 	$css .= '.site-logo{flex:0 0 auto;}';
-	$css .= '.custom-logo{display:block;width:auto;max-width:100%;margin:0;';
+	$css .= '.site-logo .custom-logo,.site-logo .custom-logo img{display:block;width:auto;max-width:100%;margin:0;';
 	if ( $logo_h_mobile !== '' ) {
 		$css .= "height:{$logo_h_mobile};";
 	}
 	$css .= '}';
 	if ( $logo_h_desktop !== '' ) {
-		$css .= "@media (min-width:768px){.custom-logo{height:{$logo_h_desktop};}}";
+		$css .= "@media (min-width:768px){.site-logo .custom-logo,.site-logo .custom-logo img{height:{$logo_h_desktop};}}";
 	}
+
+	// footer logo: sized by the container's Logo Width (footer.php), so the logo (and the
+	// inner <img> when wrapped in <picture>, see NOTE above) fills that width.
+	$css .= '.footer-logo .custom-logo,.footer-logo .custom-logo img{display:block;width:100%;height:auto;margin:0;}';
 
 	// header logo position on mobile: the hamburger is pinned to the right (out of flow)
 	// so the logo can sit left / centre / right without the two colliding. desktop is untouched.
